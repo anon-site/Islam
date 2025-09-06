@@ -16,8 +16,28 @@ const infoCard = document.querySelector(".mobile-info-card");
 const infoTitle = document.querySelector(".info-content h3");
 const infoDescription = document.querySelector(".info-content p");
 
+// عناصر المشاركة
+const shareBtn = document.getElementById("shareBtn");
+const shareModal = document.getElementById("shareModal");
+const closeShare = document.getElementById("closeShare");
+const shareSongImage = document.getElementById("shareSongImage");
+const shareSongTitle = document.getElementById("shareSongTitle");
+const shareSongDescription = document.getElementById("shareSongDescription");
+const shareText = document.getElementById("shareText");
+const copyLink = document.getElementById("copyLink");
+const shareWhatsApp = document.getElementById("shareWhatsApp");
+const shareTelegram = document.getElementById("shareTelegram");
+const shareTwitter = document.getElementById("shareTwitter");
+const shareFacebook = document.getElementById("shareFacebook");
+
+// عناصر التكرار
+const repeatBtn = document.getElementById("repeatBtn");
+
 let currentSongIndex = 0;
 let isSongLoaded = false;
+
+// متغيرات التكرار
+let repeatMode = 'off'; // 'off', 'one', 'all'
 
 const songs = [
   "https://dn721602.ca.archive.org/0/items/20250906_20250906_0433/%D8%A7%D8%B3%D8%AA%D9%85%D9%8A%D8%AA%D9%88%20%D9%88%D9%87%D8%A8%D9%88%D8%A7%20%D8%A7%D9%84%D8%AC%D8%AD%D9%8A%D9%85.mp3",
@@ -44,79 +64,98 @@ const songs = [
 const songInfo = [
   {
     title: "استميتو وهبوا الجحيم",
-    description: "نشيد قوي يبعث الحماس والثبات في النفوس"
+    description: "نشيد قوي يبعث الحماس والثبات في النفوس",
+    image: "img/استميتو وهبوا الجحيم.jpg"
   },
   {
     title: "الى الله جمعا تنادوا سراعا",
-    description: "دعوة للاجتماع والتوحيد تحت راية الإسلام"
+    description: "دعوة للاجتماع والتوحيد تحت راية الإسلام",
+    image: "img/الى الله جمعا تنادوا سراعا  اناشيد اسلامية.jpg"
   },
   {
     title: "انا في الحرب العوان",
-    description: "نشيد البطولة والشجاعة في ساحات القتال"
+    description: "نشيد البطولة والشجاعة في ساحات القتال",
+    image: "img/انا في الحرب العوان.jpg"
   },
   {
     title: "انتفض او مت",
-    description: "نداء للثورة والتحرر من الظلم والاستبداد"
+    description: "نداء للثورة والتحرر من الظلم والاستبداد",
+    image: "img/انتفض او مت.png"
   },
   {
     title: "بقايا المجد",
-    description: "تذكير بمجد الأمة الإسلامية وعزتها"
+    description: "تذكير بمجد الأمة الإسلامية وعزتها",
+    image: "img/بقايا المجد.png"
   },
   {
     title: "حماة الدار",
-    description: "نشيد الدفاع عن الوطن والأرض المقدسة"
+    description: "نشيد الدفاع عن الوطن والأرض المقدسة",
+    image: "img/حماة الدار.jpg"
   },
   {
     title: "ذكر الظالم",
-    description: "تذكير بآثار الظلم وضرورة العدل"
+    description: "تذكير بآثار الظلم وضرورة العدل",
+    image: "img/ذكر الظالم.png"
   },
   {
     title: "رسمت اسرتنا",
-    description: "نشيد الأسرة المسلمة المتماسكة"
+    description: "نشيد الأسرة المسلمة المتماسكة",
+    image: "img/رسمت اسرتنا.png"
   },
   {
     title: "رصوا الصفوف",
-    description: "دعوة للوحدة والتضامن في صفوف المسلمين"
+    description: "دعوة للوحدة والتضامن في صفوف المسلمين",
+    image: "img/رصوا الصفوف.jpg"
   },
   {
     title: "سألوا الأحزاب",
-    description: "نشيد التحدي والثبات أمام الأعداء"
+    description: "نشيد التحدي والثبات أمام الأعداء",
+    image: "img/سألوا الأحزاب.jpg"
   },
   {
     title: "شريعتنا",
-    description: "تأكيد على عظمة الشريعة الإسلامية"
+    description: "تأكيد على عظمة الشريعة الإسلامية",
+    image: "img/شريعتنا.jpg"
   },
   {
     title: "صامدون",
-    description: "نشيد الصمود والثبات في وجه التحديات"
+    description: "نشيد الصمود والثبات في وجه التحديات",
+    image: "img/صامدون.png"
   },
   {
     title: "في دياجير الظلام",
-    description: "نشيد الأمل والضياء في أحلك الأوقات"
+    description: "نشيد الأمل والضياء في أحلك الأوقات",
+    image: "img/في دياجير الظلام.webp"
   },
   {
     title: "في سبيل الله",
-    description: "نشيد الجهاد والتضحية في سبيل الدين"
+    description: "نشيد الجهاد والتضحية في سبيل الدين",
+    image: "img/في سبيل الله.jpg"
   },
   {
     title: "الله اعلى واكبر",
-    description: "تسبيح وتعظيم لله تعالى"
+    description: "تسبيح وتعظيم لله تعالى",
+    image: "img/نشيد الله اعلى واكبر.jpg"
   },
   {
-    title: "حاربوه ياعداه",
-    description: "نداء للمقاومة والجهاد ضد الأعداء"
+    title: "قل لباغٍ نال منه",
+    description: "نداء للمقاومة والجهاد ضد الأعداء",
+    image: "img/نشيد حاربوه ياعداه.jpg"
   },
   {
     title: "هاك قلبي ودمي",
-    description: "نشيد التضحية والفداء للدين والوطن"
+    description: "نشيد التضحية والفداء للدين والوطن",
+    image: "img/هاك قلبي ودمي.png"
   },
   {
     title: "يارفيق الدرب",
-    description: "نشيد الأخوة والرفقة في طريق الحق"
+    description: "نشيد الأخوة والرفقة في طريق الحق",
+    image: "img/يارفيق الدرب.png"
   },
   {
     title: "ياشباب قد اناب",
-    description: "نداء للشباب للعودة إلى طريق الإسلام"
+    description: "نداء للشباب للعودة إلى طريق الإسلام",
+    image: "img/ياشباب قد اناب.png"
   }
 ];
 
@@ -162,7 +201,17 @@ function loadAndPlaySong(index) {
   updatePlaylistHighlight(index);
   updateSwiperToMatchSong(index);
   updateInfoCard(index);
+  updateUrl(index);
   isSongLoaded = true;
+}
+
+function updateUrl(songIndex) {
+  const newUrl = generateShareUrl(songIndex);
+  // تحديث URL بدون إعادة تحميل الصفحة
+  window.history.pushState({}, '', newUrl);
+  
+  // تحديث عنوان الصفحة للعرض في المتصفح
+  document.title = `${songInfo[songIndex].title} - مشغل الأناشيد الإسلامية`;
 }
 
 function updateInfoCard(index) {
@@ -213,7 +262,19 @@ function updatePlayPauseIcon(isPlaying) {
 }
 
 function nextSong() {
-  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  // إذا كان التكرار على النشيد الواحد، لا نغير النشيد
+  if (repeatMode === 'one') {
+    return;
+  }
+  
+  // إذا كان التكرار على جميع الأناشيد، ننتقل للنشيد التالي
+  if (repeatMode === 'all') {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+  } else {
+    // الوضع العادي - ننتقل للنشيد التالي
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+  }
+  
   loadAndPlaySong(currentSongIndex);
   swiper.slideTo(currentSongIndex);
 }
@@ -290,7 +351,19 @@ volumeRange.addEventListener("input", () => {
   audioPlayer.volume = newVolume / 100;
 });
 
-audioPlayer.addEventListener("ended", nextSong);
+audioPlayer.addEventListener("ended", () => {
+  if (repeatMode === 'one') {
+    // تكرار النشيد الحالي
+    audioPlayer.currentTime = 0;
+    playSong();
+  } else if (repeatMode === 'all') {
+    // تكرار جميع الأناشيد
+    nextSong();
+  } else {
+    // الوضع العادي
+    nextSong();
+  }
+});
 
 shuffleBtn.addEventListener("click", () => {
   const randomIndex = Math.floor(Math.random() * songs.length);
@@ -304,6 +377,38 @@ shuffleBtn.addEventListener("click", () => {
     loadAndPlaySong(currentSongIndex);
   }
 });
+
+// وظائف التكرار
+function toggleRepeat() {
+  // تغيير وضع التكرار: off -> one -> all -> off
+  if (repeatMode === 'off') {
+    repeatMode = 'one';
+  } else if (repeatMode === 'one') {
+    repeatMode = 'all';
+  } else {
+    repeatMode = 'off';
+  }
+  
+  updateRepeatButton();
+}
+
+function updateRepeatButton() {
+  if (repeatBtn) {
+    // إزالة جميع الفئات
+    repeatBtn.classList.remove('repeat-off', 'repeat-one', 'repeat-all');
+    
+    // إضافة الفئة المناسبة
+    repeatBtn.classList.add(`repeat-${repeatMode}`);
+    
+    // تحديث العنوان التوضيحي
+    const titles = {
+      'off': 'تكرار النشيد',
+      'one': 'تكرار النشيد الحالي',
+      'all': 'تكرار جميع الأناشيد'
+    };
+    repeatBtn.title = titles[repeatMode];
+  }
+}
 
 
 // وظائف القائمة الجانبية
@@ -335,9 +440,51 @@ if (playlist) {
   });
 }
 
+// إضافة مستمع الأحداث لزر التكرار
+if (repeatBtn) {
+  repeatBtn.addEventListener('click', toggleRepeat);
+}
+
 // تهيئة النص الأول
 document.addEventListener('DOMContentLoaded', () => {
+  // قراءة معاملات URL للتوجيه المباشر للنشيد
+  const urlParams = new URLSearchParams(window.location.search);
+  const songIndex = urlParams.get('song');
+  
+  if (songIndex !== null) {
+    const index = parseInt(songIndex);
+    if (index >= 0 && index < songs.length) {
+      currentSongIndex = index;
+      // تحديث Swiper للانتقال إلى النشيد المحدد
+      setTimeout(() => {
+        swiper.slideTo(index);
+        loadAndPlaySong(index);
+      }, 100);
+    }
+  }
+  
   updateInfoCard(currentSongIndex);
+  updateRepeatButton(); // تهيئة زر التكرار
+});
+
+// دعم العودة للخلف في المتصفح
+window.addEventListener('popstate', (event) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const songIndex = urlParams.get('song');
+  
+  if (songIndex !== null) {
+    const index = parseInt(songIndex);
+    if (index >= 0 && index < songs.length && index !== currentSongIndex) {
+      currentSongIndex = index;
+      swiper.slideTo(index);
+      loadAndPlaySong(index);
+    }
+  } else if (currentSongIndex !== 0) {
+    // إذا لم يكن هناك معامل song، انتقل إلى النشيد الأول
+    currentSongIndex = 0;
+    swiper.slideTo(0);
+    loadAndPlaySong(0);
+  }
 });
 
 // تحديث عرض الوقت كل ثانية
@@ -346,3 +493,197 @@ setInterval(() => {
     updateTimeDisplay();
   }
 }, 1000);
+
+// وظائف المشاركة
+function generateShareUrl(songIndex = currentSongIndex) {
+  // إذا كان الموقع يعمل محلياً، استخدم مسار نسبي
+  if (window.location.protocol === 'file:') {
+    return `index.html?song=${songIndex}`;
+  }
+  // إذا كان الموقع على خادم ويب، استخدم الرابط الكامل
+  const baseUrl = window.location.origin + window.location.pathname;
+  return `${baseUrl}?song=${songIndex}`;
+}
+
+function openShareModal() {
+  const currentSong = songInfo[currentSongIndex];
+  if (currentSong) {
+    shareSongImage.src = currentSong.image;
+    shareSongTitle.textContent = currentSong.title;
+    shareSongDescription.textContent = currentSong.description;
+    
+    // إنشاء رابط المشاركة مع معرف النشيد
+    const shareUrl = generateShareUrl(currentSongIndex);
+    
+    // تعيين نص المشاركة الافتراضي
+    const defaultText = `🎵 ${currentSong.title}\n\n${currentSong.description}\n\nاستمع إلى هذا النشيد الإسلامي الجميل:\n${shareUrl}`;
+    shareText.value = defaultText;
+  }
+  
+  shareModal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeShareModal() {
+  shareModal.classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      showNotification('تم نسخ الرابط إلى الحافظة!', 'success');
+    }).catch(() => {
+      fallbackCopyTextToClipboard(text);
+    });
+  } else {
+    fallbackCopyTextToClipboard(text);
+  }
+}
+
+function fallbackCopyTextToClipboard(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  
+  try {
+    document.execCommand('copy');
+    showNotification('تم نسخ الرابط إلى الحافظة!', 'success');
+  } catch (err) {
+    showNotification('فشل في نسخ الرابط', 'error');
+  }
+  
+  document.body.removeChild(textArea);
+}
+
+function showNotification(message, type = 'info') {
+  // إنشاء إشعار مؤقت
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    z-index: 3000;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: slideInRight 0.3s ease;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOutRight 0.3s ease';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+function shareToWhatsApp() {
+  const text = shareText.value || `🎵 ${songInfo[currentSongIndex].title}`;
+  const shareUrl = generateShareUrl(currentSongIndex);
+  const url = `https://wa.me/?text=${encodeURIComponent(text + '\n\n' + shareUrl)}`;
+  window.open(url, '_blank');
+}
+
+function shareToTelegram() {
+  const text = shareText.value || `🎵 ${songInfo[currentSongIndex].title}`;
+  const shareUrl = generateShareUrl(currentSongIndex);
+  const url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank');
+}
+
+function shareToTwitter() {
+  const text = shareText.value || `🎵 ${songInfo[currentSongIndex].title}`;
+  const shareUrl = generateShareUrl(currentSongIndex);
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+  window.open(url, '_blank');
+}
+
+function shareToFacebook() {
+  const shareUrl = generateShareUrl(currentSongIndex);
+  const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+  window.open(url, '_blank');
+}
+
+// إضافة مستمعي الأحداث للمشاركة
+if (shareBtn) {
+  shareBtn.addEventListener('click', openShareModal);
+}
+
+if (closeShare) {
+  closeShare.addEventListener('click', closeShareModal);
+}
+
+if (shareModal) {
+  shareModal.addEventListener('click', (e) => {
+    if (e.target === shareModal) {
+      closeShareModal();
+    }
+  });
+}
+
+if (copyLink) {
+  copyLink.addEventListener('click', () => {
+    const text = shareText.value || `🎵 ${songInfo[currentSongIndex].title}`;
+    const shareUrl = generateShareUrl(currentSongIndex);
+    copyToClipboard(text + '\n\n' + shareUrl);
+  });
+}
+
+if (shareWhatsApp) {
+  shareWhatsApp.addEventListener('click', shareToWhatsApp);
+}
+
+if (shareTelegram) {
+  shareTelegram.addEventListener('click', shareToTelegram);
+}
+
+if (shareTwitter) {
+  shareTwitter.addEventListener('click', shareToTwitter);
+}
+
+if (shareFacebook) {
+  shareFacebook.addEventListener('click', shareToFacebook);
+}
+
+// إضافة أنيميشن للإشعارات
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
