@@ -837,15 +837,15 @@ main:hover::before {
   .player {
     width: 100%;
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     left: 0;
     right: 0;
     transform: none;
     z-index: 100;
-    border-radius: 0;
+    border-radius: 15px;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
     margin-top: 0;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
@@ -1027,6 +1027,14 @@ main:hover::before {
   .playlist-item .duration {
     font-size: 0.75rem;
     padding: 2px 5px;
+  }
+
+  .player {
+    bottom: 15px;
+    left: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+    border-radius: 12px;
   }
 
   .controls {
