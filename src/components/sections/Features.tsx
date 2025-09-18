@@ -63,7 +63,7 @@ const Features = () => {
   }
 
   return (
-    <section id="features" className="py-20 bg-white">
+    <section id="features" className="py-20 bg-white dark:bg-gray-900">
       <div className="container">
         <motion.div
           className="text-center space-y-4 mb-16"
@@ -72,10 +72,10 @@ const Features = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
             مميزات متطورة
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             اكتشف التقنيات والأدوات التي تجعل تطوير الويب أسرع وأسهل وأكثر كفاءة
           </p>
         </motion.div>
@@ -99,10 +99,10 @@ const Features = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h3 className="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -119,10 +119,10 @@ const Features = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             جاهز للبدء؟
           </h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
             انضم إلى آلاف المطورين الذين يستخدمون أحدث التقنيات لبناء مستقبل الويب
           </p>
           <button className="btn-primary">

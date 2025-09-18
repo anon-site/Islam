@@ -15,7 +15,7 @@ const Hero = () => {
           >
             <div className="space-y-4">
               <motion.h1 
-                className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight"
+                className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -25,7 +25,7 @@ const Hero = () => {
               </motion.h1>
               
               <motion.p 
-                className="text-xl text-gray-600 leading-relaxed"
+                className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -59,12 +59,12 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">10K+</div>
-                <div className="text-sm text-gray-600">مطور نشط</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">10K+</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">مطور نشط</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">99.9%</div>
-                <div className="text-sm text-gray-600">وقت التشغيل</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">99.9%</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">وقت التشغيل</div>
               </div>
               <div className="flex items-center space-x-1 space-x-reverse">
                 <div className="flex">
@@ -72,7 +72,7 @@ const Hero = () => {
                     <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <span className="text-sm text-gray-600">4.9/5</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">4.9/5</span>
               </div>
             </motion.div>
           </motion.div>

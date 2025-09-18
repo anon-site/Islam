@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X, Sparkles } from 'lucide-react'
+import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -8,13 +9,14 @@ const Header = () => {
   const navigation = [
     { name: 'الرئيسية', href: '#home' },
     { name: 'المميزات', href: '#features' },
-    { name: 'حولنا', href: '#about' },
-    { name: 'اتصل بنا', href: '#contact' },
+    { name: 'آراء العملاء', href: '#testimonials' },
+    { name: 'الأسعار', href: '#pricing' },
+    { name: 'الأسئلة الشائعة', href: '#faq' },
   ]
 
   return (
     <motion.header 
-      className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200"
+      className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -35,15 +37,16 @@ const Header = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-600 hover:text-primary-600 transition-colors font-medium"
+                className="text-gray-600 hover:text-primary-600 transition-colors font-medium dark:text-gray-300 dark:hover:text-primary-400"
               >
                 {item.name}
               </a>
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* CTA Button & Theme Toggle */}
           <div className="hidden md:flex items-center space-x-4 space-x-reverse">
+            <ThemeToggle />
             <button className="btn-primary">
               ابدأ الآن
             </button>
@@ -51,7 +54,7 @@ const Header = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
@@ -65,7 +68,7 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <motion.div
-            className="md:hidden py-4 border-t border-gray-200"
+            className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -75,12 +78,16 @@ const Header = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-gray-600 hover:text-primary-600 transition-colors font-medium"
+                  className="text-gray-600 hover:text-primary-600 transition-colors font-medium dark:text-gray-300 dark:hover:text-primary-400"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </a>
               ))}
+              <div className="flex items-center justify-between mt-4">
+                <span className="text-sm text-gray-600 dark:text-gray-400">الوضع:</span>
+                <ThemeToggle />
+              </div>
               <button className="btn-primary w-full mt-4">
                 ابدأ الآن
               </button>
