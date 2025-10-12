@@ -58,7 +58,7 @@
         /* تنسيق الساعة (الافتراضي للشاشات الكبيرة) */
         .digital-clock {
             font-family: var(--font-english);
-            font-size: 8rem;
+            font-size: 6rem;
             font-weight: 700;
             margin-bottom: 10px;
             text-shadow: 0 0 20px var(--primary-color), 0 0 30px rgba(255, 255, 255, 0.5);
@@ -66,7 +66,7 @@
         }
 
         .date-container {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             margin-bottom: 20px;
             line-height: 1.8;
             font-weight: 400;
@@ -116,20 +116,29 @@
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
 
+        /* تنسيق حاوية البحث */
+        .search-wrapper {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         /* تنسيق صندوق البحث - محسن وأكثر احترافية */
         #city-search {
             padding: 15px 25px;
             border: 2px solid transparent;
             border-radius: 50px;
             font-size: 1.2rem;
-            width: 90%;
-            max-width: 600px;
+            flex: 1;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             color: var(--text-color);
             text-align: center;
-            margin-bottom: 30px;
             box-sizing: border-box;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
@@ -177,30 +186,77 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        /* زر البحث */
+        .search-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-color), #388E3C);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .search-btn:active {
+            transform: scale(0.95);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Spinner للتحميل */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* تنسيق اسم المدينة */
         .city-name {
-            font-size: 3rem;
+            font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             color: var(--secondary-color);
         }
 
         /* حاوية مواقيت الصلاة */
         .prayer-times-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 18px;
             width: 95%;
-            max-width: 1200px;
-            margin: 0 auto 50px auto;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
         }
 
         /* بطاقة وقت الصلاة */
         .prayer-card {
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-            padding: 20px 15px;
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 18px 12px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -241,10 +297,10 @@
         }
 
         .prayer-name {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary-color);
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
             position: relative;
             display: inline-block;
         }
@@ -272,7 +328,7 @@
         
         .prayer-time {
             font-family: var(--font-english);
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--secondary-color);
             direction: ltr;
@@ -301,38 +357,55 @@
             
             /* 1. الساعة والتاريخ */
             .digital-clock { 
-                font-size: 2.8rem; /* تصغير طفيف إضافي */
-                margin-top: 5px; 
+                font-size: 3.2rem;
+                margin-top: 10px;
+                margin-bottom: 8px;
             }
             .date-container { 
-                font-size: 0.85rem; /* أصغر حجم للتاريخ */
-                margin-bottom: 8px; 
+                font-size: 0.9rem;
+                margin-bottom: 12px; 
             }
 
             /* 2. الصلاة القادمة */
             .next-prayer-container {
-                padding: 10px 10px;
-                margin-bottom: 12px;
-                width: 95%; /* استخدام النسبة المئوية للمرونة */
+                padding: 12px 14px;
+                margin-bottom: 15px;
+                max-width: 320px;
             }
             .next-prayer-container h3 { 
-                font-size: 0.95rem; 
-                margin-bottom: 4px;
+                font-size: 1rem; 
+                margin-bottom: 5px;
             }
             .countdown { 
-                font-size: 1.8rem; 
+                font-size: 1.6rem; 
             }
 
             /* 3. البحث والمدينة */
+            .search-wrapper {
+                width: 95%;
+                margin-bottom: 15px;
+                flex-direction: row;
+                gap: 8px;
+            }
+
             #city-search {
                 padding: 12px 20px;
                 font-size: 1rem;
-                margin-bottom: 15px;
-                width: 95%;
                 background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1));
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px);
                 box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            }
+
+            .search-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+
+            .spinner {
+                width: 16px;
+                height: 16px;
             }
 
             #city-search:focus {
@@ -347,25 +420,25 @@
                 transform: translateY(-1px);
             }
             .city-name { 
-                font-size: 1.2rem; /* أصغر حجم لاسم المدينة */
-                margin-bottom: 12px;
+                font-size: 1.4rem;
+                margin-bottom: 15px;
             }
 
             /* 4. بطاقات الصلاة */
             .prayer-times-container {
                 grid-template-columns: repeat(2, 1fr); 
-                gap: 5px; /* تقليل المسافة بين البطاقات إلى الحد الأدنى */
-                margin-bottom: 10px;
-                width: 100%; /* استخدام العرض الكامل المتاح داخل overlay */
+                gap: 10px;
+                margin-bottom: 15px;
+                width: 98%;
             }
             .prayer-card {
-                padding: 10px 5px; /* تقليل مساحة البطاقة الداخلية */
+                padding: 14px 8px;
             }
             .prayer-name { 
-                font-size: 0.9rem; 
+                font-size: 1rem; 
             }
             .prayer-time { 
-                font-size: 1.4rem; /* حجم مناسب جداً للهاتف */
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -385,7 +458,13 @@
         </div>
 
         <div class="search-container">
-            <input type="text" id="city-search" placeholder="ابحث عن مدينة (مثال: London, UK)">
+            <div class="search-wrapper">
+                <input type="text" id="city-search" placeholder="ابحث عن مدينة (مثال: London, UK)">
+                <button id="search-button" class="search-btn">
+                    <i class="fas fa-search" id="search-icon"></i>
+                    <span class="spinner" id="search-spinner" style="display: none;"></span>
+                </button>
+            </div>
         </div>
 
         <div class="city-name" id="current-city">أثينا، اليونان</div>
@@ -558,6 +637,45 @@
             .dua-text {
                 font-size: 1rem;
             }
+        }
+
+        /* تنسيق الإشعارات */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(26, 26, 46, 0.95));
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+            font-size: 1rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .notification-success {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .notification-error {
+            border-left: 4px solid var(--highlight-color);
+        }
+
+        .notification-info {
+            border-left: 4px solid var(--secondary-color);
         }
 
         /* زر الإعدادات العائم */
@@ -819,56 +937,56 @@
 
         /* Dynamic Zoom Styles */
         body[data-zoom="50"] .digital-clock {
-            font-size: 4rem !important;
+            font-size: 3rem !important;
         }
 
         body[data-zoom="55"] .digital-clock {
-            font-size: 4.4rem !important;
+            font-size: 3.3rem !important;
         }
 
         body[data-zoom="60"] .digital-clock {
-            font-size: 4.8rem !important;
+            font-size: 3.6rem !important;
         }
 
         body[data-zoom="65"] .digital-clock {
-            font-size: 5.2rem !important;
+            font-size: 3.9rem !important;
         }
 
         body[data-zoom="70"] .digital-clock {
-            font-size: 5.6rem !important;
+            font-size: 4.2rem !important;
         }
 
         body[data-zoom="75"] .digital-clock {
-            font-size: 6rem !important;
+            font-size: 4.5rem !important;
         }
 
         body[data-zoom="80"] .digital-clock {
-            font-size: 6.4rem !important;
+            font-size: 4.8rem !important;
         }
 
         body[data-zoom="85"] .digital-clock {
-            font-size: 6.8rem !important;
+            font-size: 5.1rem !important;
         }
 
         body[data-zoom="90"] .digital-clock {
-            font-size: 7.2rem !important;
+            font-size: 5.4rem !important;
         }
 
         body[data-zoom="95"] .digital-clock {
-            font-size: 7.6rem !important;
+            font-size: 5.7rem !important;
         }
 
         body[data-zoom="100"] .digital-clock {
-            font-size: 8rem !important;
+            font-size: 6rem !important;
         }
 
         /* Apply zoom to other elements proportionally */
         body[data-zoom] .city-name {
-            font-size: calc(3rem * (var(--zoom-factor, 1))) !important;
+            font-size: calc(2rem * (var(--zoom-factor, 1))) !important;
         }
 
         body[data-zoom] .date-container {
-            font-size: calc(1.5rem * (var(--zoom-factor, 1))) !important;
+            font-size: calc(1.2rem * (var(--zoom-factor, 1))) !important;
         }
 
         body[data-zoom] .next-prayer-container {
@@ -890,19 +1008,19 @@
         }
 
         body[data-zoom] .prayer-times-container {
-            gap: calc(25px * (var(--zoom-factor, 1))) !important;
+            gap: calc(18px * (var(--zoom-factor, 1))) !important;
         }
 
         body[data-zoom] .prayer-card {
-            padding: calc(20px * (var(--zoom-factor, 1))) calc(15px * (var(--zoom-factor, 1))) !important;
+            padding: calc(18px * (var(--zoom-factor, 1))) calc(12px * (var(--zoom-factor, 1))) !important;
         }
 
         body[data-zoom] .prayer-name {
-            font-size: calc(1.4rem * (var(--zoom-factor, 1))) !important;
+            font-size: calc(1.2rem * (var(--zoom-factor, 1))) !important;
         }
 
         body[data-zoom] .prayer-time {
-            font-size: calc(2.2rem * (var(--zoom-factor, 1))) !important;
+            font-size: calc(1.8rem * (var(--zoom-factor, 1))) !important;
         }
     </style>
 
@@ -1084,49 +1202,164 @@
         }
 
 
-        // **4. وظيفة البحث عن المدينة**
-        async function searchCity(cityName) {
-            if (!cityName || cityName.length < 3) return;
+        // **4. وظيفة البحث عن المدينة (محسّنة)**
+        let isSearching = false;
 
-            const parts = cityName.split(',').map(p => p.trim());
+        async function searchCity(cityName) {
+            console.log('searchCity called with:', cityName);
+            
+            // منع البحث المتكرر
+            if (isSearching) {
+                console.log('Search already in progress');
+                return;
+            }
+            
+            // التحقق من صحة المدخلات
+            if (!cityName || cityName.trim().length < 2) {
+                alert('يرجى إدخال اسم مدينة صحيح');
+                return;
+            }
+
+            const trimmedCity = cityName.trim();
+            const parts = trimmedCity.split(',').map(p => p.trim());
             const city = parts[0];
             const country = parts.length > 1 ? parts[1] : '';
 
-            const url = `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=4`;
-            document.getElementById('current-city').textContent = `جاري البحث عن ${city}, ${country}...`;
+            // تفعيل حالة البحث
+            isSearching = true;
+            
+            // التحكم في واجهة البحث
+            const searchBtn = document.getElementById('search-button');
+            const searchIcon = document.getElementById('search-icon');
+            const searchSpinner = document.getElementById('search-spinner');
+            const searchInput = document.getElementById('city-search');
+            
+            if (searchBtn) searchBtn.disabled = true;
+            if (searchInput) searchInput.disabled = true;
+            if (searchIcon) searchIcon.style.display = 'none';
+            if (searchSpinner) searchSpinner.style.display = 'block';
+
+            // عرض رسالة البحث
+            const displayText = country ? `${city}, ${country}` : city;
+            document.getElementById('current-city').textContent = `جاري البحث عن ${displayText}...`;
+            document.querySelectorAll('.prayer-time').forEach(el => {
+                el.textContent = '...';
+            });
 
             try {
+                // استخدام API
+                const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=4`;
+                console.log('Fetching from:', url);
+                
                 const response = await fetch(url);
                 const data = await response.json();
+                console.log('API Response:', data);
 
-                if (data.data && data.data.meta) {
+                if (data.code === 200 && data.data && data.data.timings) {
                     const meta = data.data.meta;
-                    const lat = meta.latitude;
-                    const lon = meta.longitude;
-                    currentCity = `${city}, ${country || meta.timezone}`;
+                    const timings = data.data.timings;
+                    
+                    // تحديث البيانات العامة
+                    const lat = parseFloat(meta.latitude);
+                    const lon = parseFloat(meta.longitude);
+                    const cityDisplay = country ? `${city}, ${country}` : `${city}, ${meta.timezone}`;
+                    
+                    currentCity = cityDisplay;
                     defaultLatitude = lat;
                     defaultLongitude = lon;
                     
-                    await getPrayerTimes(lat, lon, currentCity);
+                    // تحديث مواقيت الصلاة مباشرة
+                    prayerTimesData = timings;
+                    console.log('Updated prayerTimesData:', prayerTimesData);
+                    
+                    // عرض المواقيت
+                    PRAYER_ORDER.forEach(prayer => {
+                        const timeEl = document.getElementById(prayer);
+                        if (timeEl && timings[prayer]) {
+                            timeEl.textContent = timings[prayer].substring(0, 5);
+                        }
+                    });
+                    
+                    // تحديث اسم المدينة
+                    document.getElementById('current-city').textContent = cityDisplay;
+                    
+                    // تحديث العد التنازلي
+                    updateNextPrayerCountdown(true);
+                    
+                    // مسح حقل البحث
                     document.getElementById('city-search').value = '';
+                    
+                    // حفظ المدينة في localStorage
+                    localStorage.setItem('saved-city', currentCity);
+                    localStorage.setItem('saved-lat', defaultLatitude.toString());
+                    localStorage.setItem('saved-lon', defaultLongitude.toString());
+                    
+                    console.log('Search completed successfully!');
+                    
                 } else {
-                    throw new Error("لم يتم العثور على المدينة.");
+                    throw new Error("لم يتم العثور على المدينة");
                 }
             } catch (error) {
                 console.error("خطأ في البحث عن المدينة:", error);
-                document.getElementById('current-city').textContent = `لم يتم العثور على: ${cityName}. يرجى المحاولة مرة أخرى.`;
-                document.querySelectorAll('.prayer-time').forEach(el => el.textContent = 'بحث');
+                
+                const errorMsg = `لم يتم العثور على: ${displayText}`;
+                document.getElementById('current-city').textContent = errorMsg;
+                document.querySelectorAll('.prayer-time').forEach(el => {
+                    el.textContent = '--:--';
+                });
+                
+                alert(errorMsg + '. يرجى المحاولة مرة أخرى.');
+            } finally {
+                // إنهاء حالة البحث
+                isSearching = false;
+                
+                if (searchBtn) searchBtn.disabled = false;
+                if (searchInput) searchInput.disabled = false;
+                if (searchIcon) searchIcon.style.display = 'block';
+                if (searchSpinner) searchSpinner.style.display = 'none';
             }
         }
 
-        document.getElementById('city-search').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchCity(e.target.value);
+        // معالج حدث الضغط على Enter
+        document.addEventListener('DOMContentLoaded', function() {
+            const citySearch = document.getElementById('city-search');
+            const searchButton = document.getElementById('search-button');
+            
+            if (citySearch) {
+                citySearch.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        console.log('Enter pressed, search value:', e.target.value);
+                        searchCity(e.target.value);
+                    }
+                });
+            }
+            
+            // معالج حدث النقر على زر البحث
+            if (searchButton) {
+                searchButton.addEventListener('click', function() {
+                    const searchInput = document.getElementById('city-search');
+                    console.log('Search button clicked, value:', searchInput.value);
+                    searchCity(searchInput.value);
+                });
             }
         });
 
-        // **5. تشغيل البرنامج**
+        // **5. تحميل المدينة المحفوظة عند بدء التشغيل**
+        function loadSavedCity() {
+            const savedCity = localStorage.getItem('saved-city');
+            const savedLat = localStorage.getItem('saved-lat');
+            const savedLon = localStorage.getItem('saved-lon');
+            
+            if (savedCity && savedLat && savedLon) {
+                currentCity = savedCity;
+                defaultLatitude = parseFloat(savedLat);
+                defaultLongitude = parseFloat(savedLon);
+            }
+        }
 
+        // **6. تشغيل البرنامج**
+        loadSavedCity();
         setInterval(updateClockAndDate, 1000);
         updateClockAndDate(); 
 
