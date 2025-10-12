@@ -44,6 +44,20 @@
             background-position: center;
             background-attachment: fixed;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* الظل الشامل على كل الموقع */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* السكشن الرئيسي - بحجم الشاشة الكامل */
@@ -54,17 +68,18 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.75);
             padding: 30px 15px;
             box-sizing: border-box;
             position: relative;
+            z-index: 2;
         }
 
         /* سكشن الأدعية */
         .duas-section {
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
             padding: 50px 15px;
+            position: relative;
+            z-index: 2;
         }
 
 
@@ -76,7 +91,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            z-index: 9999;
+            z-index: 10000;
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15));
             padding: 15px 10px;
             border-radius: 25px;
