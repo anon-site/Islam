@@ -181,7 +181,11 @@
             padding: 8px 15px;
             border-radius: 8px;
             font-size: 0.85rem;
-            white-space: nowrap;
+            white-space: normal; /* السماح بتعدد الأسطر */
+            line-height: 1.4;
+            max-width: 260px;
+            direction: rtl;
+            text-align: right;
             opacity: 0;
             pointer-events: none;
             transform: translateX(10px);
@@ -753,6 +757,117 @@
                 font-size: 1.35rem;
             }
         }
+
+        /* ============================
+           Left-side RocketDock styles
+           ============================ */
+        .dock-container-left {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        .dock-toggle-btn-left {
+            width: 70px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        .dock-toggle-btn-left:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(76, 175, 80, 0.4);
+            box-shadow: 0 -3px 12px rgba(76, 175, 80, 0.2);
+        }
+        .dock-toggle-btn-left i {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .dock-toggle-btn-left:hover i {
+            color: var(--primary-color);
+            text-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+        }
+        .dock-toggle-btn-left.closed {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+        }
+        .dock-toggle-btn-left.closed i {
+            transform: rotate(180deg);
+        }
+
+        .rocket-dock-left {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15));
+            padding: 15px 10px;
+            border-radius: 0 0 25px 25px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 500px;
+            overflow: hidden;
+        }
+        .rocket-dock-left.hidden {
+            max-height: 0;
+            padding: 0 10px;
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        /* Mirror tooltip direction for left dock */
+        .rocket-dock-left .dock-item::after {
+            right: auto;
+            left: 65px;
+            transform: translateX(-10px);
+        }
+        .rocket-dock-left .dock-item:hover::after {
+            transform: translateX(0);
+        }
+
+        /* Mobile adjustments for left dock */
+        @media (max-width: 768px) {
+            .dock-container-left {
+                top: 10px;
+                left: 10px;
+            }
+            .dock-toggle-btn-left {
+                width: 56px;
+                height: 25px;
+            }
+            .dock-toggle-btn-left.closed {
+                width: 40px;
+                height: 40px;
+            }
+            .rocket-dock-left {
+                padding: 10px 8px;
+                gap: 10px;
+                border-radius: 0 0 20px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -777,6 +892,19 @@
             <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي">
                 <i class="fas fa-user"></i>
             </a>
+        </div>
+    </div>
+
+    <!-- Left-side AI Dock Container -->
+    <div class="dock-container-left">
+        <!-- زر إغلاق/فتح Dock الذكاء الاصطناعي -->
+        <button class="dock-toggle-btn-left" id="ai-dock-toggle" title="إخفاء/إظهار مواقع الذكاء الاصطناعي">
+            <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <!-- AI RocketDock - populated by JSON -->
+        <div class="rocket-dock-left" id="ai-rocket-dock">
+            <!-- سيتم إنشاء الروابط ديناميكياً -->
         </div>
     </div>
 
@@ -2076,6 +2204,109 @@
                 localStorage.setItem('islam-dock-visible', 'false');
             }
         });
+
+        // ==============================
+        // AI Dock: load links from JSON
+        // ==============================
+        const aiDockToggleBtn = document.getElementById('ai-dock-toggle');
+        const aiRocketDock = document.getElementById('ai-rocket-dock');
+        let isAIDockVisible = true;
+
+        // Load saved state for AI dock
+        const savedAIDockState = localStorage.getItem('islam-ai-dock-visible');
+        if (savedAIDockState === 'false') {
+            isAIDockVisible = false;
+            aiRocketDock.classList.add('hidden');
+            aiDockToggleBtn.classList.add('closed');
+            aiDockToggleBtn.querySelector('i').classList.remove('fa-chevron-down');
+            aiDockToggleBtn.querySelector('i').classList.add('fa-chevron-up');
+        }
+
+        aiDockToggleBtn.addEventListener('click', function() {
+            isAIDockVisible = !isAIDockVisible;
+            if (isAIDockVisible) {
+                aiRocketDock.classList.remove('hidden');
+                aiDockToggleBtn.classList.remove('closed');
+                aiDockToggleBtn.querySelector('i').classList.remove('fa-chevron-up');
+                aiDockToggleBtn.querySelector('i').classList.add('fa-chevron-down');
+                localStorage.setItem('islam-ai-dock-visible', 'true');
+            } else {
+                aiRocketDock.classList.add('hidden');
+                aiDockToggleBtn.classList.add('closed');
+                aiDockToggleBtn.querySelector('i').classList.remove('fa-chevron-down');
+                aiDockToggleBtn.querySelector('i').classList.add('fa-chevron-up');
+                localStorage.setItem('islam-ai-dock-visible', 'false');
+            }
+        });
+
+        // Fallback AI links in case fetching JSON fails
+        const fallbackAILinks = [
+            { title: 'ChatGPT', url: 'https://chatgpt.com/', icon: 'fas fa-robot', hoverColor: '#10A37F', desc: 'مساعد ذكي للدردشة وكتابة المحتوى وشرح الأكواد' },
+            { title: 'Claude', url: 'https://claude.ai/', icon: 'fas fa-brain', hoverColor: '#8B5CF6', desc: 'نموذج ذكاء اصطناعي للكتابة والتحليل طويل المدى' },
+            { title: 'Gemini', url: 'https://gemini.google.com/', icon: 'fas fa-lightbulb', hoverColor: '#4285F4', desc: 'منصة Google للمحادثة والبحث المدعوم بالذكاء الاصطناعي' },
+            { title: 'Perplexity', url: 'https://www.perplexity.ai/', icon: 'fas fa-search', hoverColor: '#00A3FF', desc: 'محرك بحث أجوبة مع مصادر موثوقة' },
+            { title: 'Poe', url: 'https://poe.com/', icon: 'fas fa-comments', hoverColor: '#FF6B00', desc: 'منصة تجمع عدة نماذج دردشة في مكان واحد' },
+            { title: 'Hugging Face', url: 'https://huggingface.co/', icon: 'fas fa-smile', hoverColor: '#FFCC4D', desc: 'مستودع نماذج الذكاء الاصطناعي ومجتمع المطورين' },
+            { title: 'Kaggle', url: 'https://www.kaggle.com/', icon: 'fas fa-chart-line', hoverColor: '#20BEFF', desc: 'مسابقات وبيانات لتعلم الآلة ونوتبوك' },
+            { title: 'Papers with Code', url: 'https://paperswithcode.com/', icon: 'fas fa-book', hoverColor: '#3CB371', desc: 'أبحاث مع تطبيقات وكود مفتوح المصدر' },
+            { title: 'arXiv AI', url: 'https://arxiv.org/list/cs.AI/recent', icon: 'fas fa-newspaper', hoverColor: '#B31B1B', desc: 'أحدث الأوراق العلمية في الذكاء الاصطناعي' },
+            { title: 'Microsoft Copilot', url: 'https://copilot.microsoft.com/', icon: 'fas fa-microchip', hoverColor: '#0F6CBD', desc: 'مساعد ذكي في البحث والبرمجة والإنتاجية' }
+        ];
+
+        async function loadAIDock() {
+            let links = [];
+            try {
+                const res = await fetch('ai-dock.json', { cache: 'no-store' });
+                if (!res.ok) throw new Error('Failed to load ai-dock.json');
+                links = await res.json();
+            } catch (e) {
+                console.warn('ai-dock.json not found or failed to load, using fallback list.', e);
+                links = fallbackAILinks;
+            }
+
+            // Clear current items
+            aiRocketDock.innerHTML = '';
+
+            links.forEach(item => {
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.className = 'dock-item ai-link';
+                const tooltip = item.desc ? `${item.title} — ${item.desc}` : item.title;
+                a.setAttribute('data-tooltip', tooltip);
+                a.target = '_blank';
+                a.rel = 'noopener';
+
+                const i = document.createElement('i');
+                i.className = item.icon || 'fas fa-robot';
+                a.appendChild(i);
+
+                // Hover styles based on color
+                const color = item.hoverColor || '#4CAF50';
+                a.addEventListener('mouseenter', () => {
+                    a.style.background = `linear-gradient(145deg, ${hexToRgba(color, 0.3)}, ${hexToRgba(color, 0.15)})`;
+                    a.style.borderColor = color;
+                    i.style.color = color;
+                });
+                a.addEventListener('mouseleave', () => {
+                    a.style.background = '';
+                    a.style.borderColor = '';
+                    i.style.color = '';
+                });
+
+                aiRocketDock.appendChild(a);
+            });
+        }
+
+        function hexToRgba(hex, alpha) {
+            const c = hex.replace('#','');
+            const bigint = parseInt(c.length === 3 ? c.split('').map(x=>x+x).join('') : c, 16);
+            const r = (bigint >> 16) & 255;
+            const g = (bigint >> 8) & 255;
+            const b = bigint & 255;
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        loadAIDock();
     </script>
 </body>
 </html>

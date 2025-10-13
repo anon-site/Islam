@@ -1,0 +1,12 @@
+[
+  { "title": "ChatGPT", "url": "https://chatgpt.com/", "icon": "fas fa-robot", "hoverColor": "#10A37F", "desc": "مساعد ذكي للدردشة وكتابة المحتوى وشرح الأكواد" },
+  { "title": "Claude", "url": "https://claude.ai/", "icon": "fas fa-brain", "hoverColor": "#8B5CF6", "desc": "نموذج ذكاء اصطناعي للكتابة والتحليل طويل المدى" },
+  { "title": "Gemini", "url": "https://gemini.google.com/", "icon": "fas fa-lightbulb", "hoverColor": "#4285F4", "desc": "منصة Google للمحادثة والبحث المدعوم بالذكاء الاصطناعي" },
+  { "title": "Perplexity", "url": "https://www.perplexity.ai/", "icon": "fas fa-search", "hoverColor": "#00A3FF", "desc": "محرك بحث أجوبة مع مصادر موثوقة" },
+  { "title": "Poe", "url": "https://poe.com/", "icon": "fas fa-comments", "hoverColor": "#FF6B00", "desc": "منصة تجمع عدة نماذج دردشة في مكان واحد" },
+  { "title": "Hugging Face", "url": "https://huggingface.co/", "icon": "fas fa-smile", "hoverColor": "#FFCC4D", "desc": "مستودع نماذج الذكاء الاصطناعي ومجتمع المطورين" },
+  { "title": "Kaggle", "url": "https://www.kaggle.com/", "icon": "fas fa-chart-line", "hoverColor": "#20BEFF", "desc": "مسابقات وبيانات لتعلم الآلة ونوتبوك" },
+  { "title": "Papers with Code", "url": "https://paperswithcode.com/", "icon": "fas fa-book", "hoverColor": "#3CB371", "desc": "أبحاث مع تطبيقات وكود مفتوح المصدر" },
+  { "title": "arXiv AI", "url": "https://arxiv.org/list/cs.AI/recent", "icon": "fas fa-newspaper", "hoverColor": "#B31B1B", "desc": "أحدث الأوراق العلمية في الذكاء الاصطناعي" },
+  { "title": "Microsoft Copilot", "url": "https://copilot.microsoft.com/", "icon": "fas fa-microchip", "hoverColor": "#0F6CBD", "desc": "مساعد ذكي في البحث والبرمجة والإنتاجية" }
+]
