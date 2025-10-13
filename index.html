@@ -458,13 +458,13 @@
 
         /* زر البحث */
         .search-btn {
-            width: 55px;
-            height: 55px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             border: none;
             background: linear-gradient(135deg, var(--primary-color), #388E3C);
             color: white;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -704,9 +704,9 @@
             }
 
             .search-btn {
-                width: 42px;
-                height: 42px;
-                font-size: 0.95rem;
+                width: 38px;
+                height: 38px;
+                font-size: 0.9rem;
                 flex-shrink: 0;
             }
 
@@ -1873,30 +1873,73 @@
             }
         });
 
-        // وظيفة تصفير الإعدادات
+        // وظيفة حذف جميع الكوكيز
+        function clearAllCookies() {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                if (name) {
+                    // حذف الكوكي للنطاق الحالي
+                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                    // حذف الكوكي للنطاق الفرعي
+                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                    // حذف الكوكي للنطاق الرئيسي
+                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname.split('.').slice(-2).join('.');
+                }
+            }
+        }
+
+        // وظيفة تصفير الإعدادات وحذف الكوكيز
         document.getElementById('reset-settings').addEventListener('click', function() {
-            // إعادة تعيين الخلفية إلى الافتراضية
-            document.body.style.backgroundImage = "url('https://img.pikbest.com/backgrounds/20250120/arabic-ornamental-patterned-background-of-islamic-mosque_11422525.jpg!w700wp')";
-            localStorage.removeItem('custom-bg');
-            document.getElementById('bg-url').value = '';
+            // تأكيد من المستخدم قبل الحذف
+            if (confirm('هل أنت متأكد من تصفير جميع الإعدادات وحذف الكوكيز؟ سيتم فقدان جميع البيانات المحفوظة.')) {
+                // إعادة تعيين الخلفية إلى الافتراضية
+                document.body.style.backgroundImage = "url('https://img.pikbest.com/backgrounds/20250120/arabic-ornamental-patterned-background-of-islamic-mosque_11422525.jpg!w700wp')";
+                localStorage.removeItem('custom-bg');
+                document.getElementById('bg-url').value = '';
 
-            // إعادة تعيين الألوان إلى الافتراضية
-            document.documentElement.style.setProperty('--primary-color', '#4CAF50');
-            document.documentElement.style.setProperty('--secondary-color', '#FFC107');
-            document.documentElement.style.setProperty('--highlight-color', '#E91E63');
-            localStorage.removeItem('color-scheme');
-            // إزالة التحديد من خيارات الألوان
-            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                // إعادة تعيين الألوان إلى الافتراضية
+                document.documentElement.style.setProperty('--primary-color', '#4CAF50');
+                document.documentElement.style.setProperty('--secondary-color', '#FFC107');
+                document.documentElement.style.setProperty('--highlight-color', '#E91E63');
+                localStorage.removeItem('color-scheme');
+                // إزالة التحديد من خيارات الألوان
+                document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
 
-            // إعادة تعيين مستوى التكبير إلى 100%
-            zoomSlider.value = 100;
-            zoomValue.textContent = '100%';
-            document.body.setAttribute('data-zoom', '100');
-            document.body.style.setProperty('--zoom-factor', '1');
-            localStorage.removeItem('zoom-level');
+                // إعادة تعيين مستوى التكبير إلى 100%
+                zoomSlider.value = 100;
+                zoomValue.textContent = '100%';
+                document.body.setAttribute('data-zoom', '100');
+                document.body.style.setProperty('--zoom-factor', '1');
+                localStorage.removeItem('zoom-level');
 
-            // أغلاق لوحة الإعدادات بعد التصفير
-            document.getElementById('settings-panel').classList.remove('show');
+                // حذف البيانات الأخرى المحفوظة
+                localStorage.removeItem('saved-city');
+                localStorage.removeItem('saved-lat');
+                localStorage.removeItem('saved-lon');
+                localStorage.removeItem('dock-visible');
+
+                // تنظيف localStorage بالكامل
+                localStorage.clear();
+
+                // حذف جميع الكوكيز
+                clearAllCookies();
+
+                // تنظيف sessionStorage أيضاً
+                sessionStorage.clear();
+
+                // عرض رسالة تأكيد
+                alert('تم تصفير جميع الإعدادات وحذف الكوكيز بنجاح!');
+
+                // أغلاق لوحة الإعدادات بعد التصفير
+                document.getElementById('settings-panel').classList.remove('show');
+
+                // إعادة تحميل الصفحة لتطبيق التغييرات
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            }
         });
 
         // وظيفة إخفاء/إظهار RocketDock
