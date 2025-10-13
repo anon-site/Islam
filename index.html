@@ -869,6 +869,12 @@
         </div>
     </section>
 
+    <!-- تذييل الحقوق -->
+    <footer class="footer-credit" aria-label="حقوق">
+        © <span id="copyright-year"></span>
+        <a href="https://anon-site.github.io/" target="_blank" rel="noopener">Anon Design</a>
+    </footer>
+
     <!-- زر الإعدادات العائم -->
     <button class="settings-button" id="settings-toggle"><i class="fas fa-cog"></i></button>
 
@@ -1087,6 +1093,44 @@
                 bottom: 15px;
                 left: 15px;
                 font-size: 20px;
+            }
+        }
+
+        /* تذييل الحقوق */
+        .footer-credit {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(26, 26, 46, 0.75));
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .footer-credit a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .footer-credit a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .footer-credit {
+                bottom: 10px;
+                font-size: 0.85rem;
+                padding: 6px 12px;
             }
         }
 
@@ -1867,6 +1911,12 @@
                 document.body.style.backgroundImage = `url('${savedBg}')`;
                 document.getElementById('bg-url').value = savedBg;
             }
+        });
+
+        // تعيين سنة الحقوق تلقائياً
+        document.addEventListener('DOMContentLoaded', function() {
+            const yEl = document.getElementById('copyright-year');
+            if (yEl) yEl.textContent = new Date().getFullYear();
         });
 
         // إعداد وضع التكبير/التصغير (Zoom Control)
