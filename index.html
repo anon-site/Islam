@@ -95,7 +95,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-decoration: none;
         }
@@ -849,11 +849,30 @@
 
         /* Mirror tooltip direction for left dock */
         .rocket-dock-left .dock-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
             right: auto;
             left: 65px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: normal;
+            line-height: 1.4;
+            max-width: 260px;
+            direction: rtl;
+            text-align: right;
+            opacity: 0;
+            pointer-events: none;
             transform: translateX(-10px);
+            transition: all 0.3s ease;
+            font-family: var(--font-arabic);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 10001;
         }
         .rocket-dock-left .dock-item:hover::after {
+            opacity: 1;
             transform: translateX(0);
         }
 
@@ -876,6 +895,10 @@
                 gap: 10px;
                 border-radius: 0 0 20px 20px;
             }
+            /* إخفاء tooltip في الهواتف */
+            .rocket-dock-left .dock-item::after {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -889,23 +912,48 @@
 
         <!-- RocketDock - شريط الروابط السريعة -->
         <div class="rocket-dock" id="rocket-dock">
-            <a href="https://www.google.com/" class="dock-item google" data-tooltip="Google">
+            <a href="https://www.google.com/" class="dock-item google" data-tooltip="Google" title="Google">
                 <i class="fab fa-google"></i>
             </a>
-            <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="YouTube">
+            <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="YouTube" title="YouTube">
                 <i class="fab fa-youtube"></i>
             </a>
-            <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="NOON TV">
+            <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="NOON TV" title="NOON TV">
                 <i class="fas fa-tv"></i>
             </a>
-            <a href="https://anon-site.github.io/ai-tools/" class="dock-item ai-tools" data-tooltip="دليل أدوات الذكاء الاصطناعي">
+            <a href="https://anon-site.github.io/ai-tools/" class="dock-item ai-tools" data-tooltip="دليل أدوات الذكاء الاصطناعي" title="دليل أدوات الذكاء الاصطناعي">
                 <i class="fas fa-brain"></i>
             </a>
-            <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي">
+            <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي" title="موقعي">
                 <i class="fas fa-user"></i>
             </a>
         </div>
     </div>
+
+    <script>
+    // إضافة tooltips للقائمة اليمنى فوراً
+    (function() {
+        const items = document.querySelectorAll('#rocket-dock .dock-item');
+        items.forEach(function(item) {
+            const text = item.getAttribute('data-tooltip');
+            if (!text) return;
+            
+            const tip = document.createElement('div');
+            tip.textContent = text;
+            tip.style.cssText = 'position:absolute;right:65px;top:50%;transform:translateY(-50%) translateX(10px);background:rgba(0,0,0,0.95);color:white;padding:8px 15px;border-radius:8px;font-size:0.85rem;white-space:normal;line-height:1.4;max-width:260px;direction:rtl;text-align:right;opacity:0;pointer-events:none;transition:all 0.3s;font-family:Cairo,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,0.5);z-index:10001';
+            item.appendChild(tip);
+            
+            item.addEventListener('mouseenter', function() {
+                tip.style.opacity = '1';
+                tip.style.transform = 'translateY(-50%) translateX(0)';
+            });
+            item.addEventListener('mouseleave', function() {
+                tip.style.opacity = '0';
+                tip.style.transform = 'translateY(-50%) translateX(10px)';
+            });
+        });
+    })();
+    </script>
 
     <!-- Left-side AI Dock Container -->
     <div class="dock-container-left">
@@ -2288,12 +2336,43 @@
                 a.className = 'dock-item ai-link';
                 const tooltip = item.desc ? `${item.title} — ${item.desc}` : item.title;
                 a.setAttribute('data-tooltip', tooltip);
-                a.target = '_blank';
-                a.rel = 'noopener';
+                a.title = tooltip; // إضافة title احتياطي
+                // إزالة فتح في نافذة جديدة
+                // a.target = '_blank';
+                // a.rel = 'noopener';
 
                 const i = document.createElement('i');
                 i.className = item.icon || 'fas fa-robot';
                 a.appendChild(i);
+
+                // إنشاء tooltip مخصص
+                const tooltipDiv = document.createElement('div');
+                tooltipDiv.className = 'custom-tooltip';
+                tooltipDiv.textContent = tooltip;
+                tooltipDiv.style.cssText = `
+                    position: absolute;
+                    left: 65px;
+                    background: rgba(0, 0, 0, 0.95);
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                    white-space: normal;
+                    line-height: 1.4;
+                    max-width: 260px;
+                    direction: rtl;
+                    text-align: right;
+                    opacity: 0;
+                    pointer-events: none;
+                    transform: translateX(-10px);
+                    transition: all 0.3s ease;
+                    font-family: 'Cairo', sans-serif;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                    z-index: 10001;
+                    top: 50%;
+                    transform: translateY(-50%) translateX(-10px);
+                `;
+                a.appendChild(tooltipDiv);
 
                 // Hover styles based on color
                 const color = item.hoverColor || '#4CAF50';
@@ -2301,11 +2380,17 @@
                     a.style.background = `linear-gradient(145deg, ${hexToRgba(color, 0.3)}, ${hexToRgba(color, 0.15)})`;
                     a.style.borderColor = color;
                     i.style.color = color;
+                    // إظهار tooltip
+                    tooltipDiv.style.opacity = '1';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(0)';
                 });
                 a.addEventListener('mouseleave', () => {
                     a.style.background = '';
                     a.style.borderColor = '';
                     i.style.color = '';
+                    // إخفاء tooltip
+                    tooltipDiv.style.opacity = '0';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(-10px)';
                 });
 
                 aiRocketDock.appendChild(a);
@@ -2322,6 +2407,82 @@
         }
 
         loadAIDock();
+
+        // =========================================
+        // إضافة tooltips للقائمة اليمنى (Right Dock)
+        // =========================================
+        function addRightDockTooltips() {
+            console.log('addRightDockTooltips: بدء التنفيذ');
+            const rightDockItems = document.querySelectorAll('.rocket-dock .dock-item');
+            console.log('addRightDockTooltips: عدد العناصر:', rightDockItems.length);
+            
+            if (rightDockItems.length === 0) {
+                console.error('❗ لم يتم العثور على عناصر .rocket-dock .dock-item');
+                return;
+            }
+            
+            rightDockItems.forEach((item, index) => {
+                const tooltipText = item.getAttribute('data-tooltip');
+                console.log(`عنصر ${index + 1}: tooltip = "${tooltipText}"`);
+                if (!tooltipText) {
+                    console.warn(`عنصر ${index + 1}: لا يوجد tooltip`);
+                    return;
+                }
+
+                // إنشاء tooltip مخصص
+                const tooltipDiv = document.createElement('div');
+                tooltipDiv.className = 'custom-tooltip-right';
+                tooltipDiv.textContent = tooltipText;
+                tooltipDiv.style.cssText = `
+                    position: absolute;
+                    right: 65px;
+                    background: rgba(0, 0, 0, 0.95);
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                    white-space: normal;
+                    line-height: 1.4;
+                    max-width: 260px;
+                    direction: rtl;
+                    text-align: right;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: all 0.3s ease;
+                    font-family: 'Cairo', sans-serif;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                    z-index: 10001;
+                    top: 50%;
+                    transform: translateY(-50%) translateX(10px);
+                `;
+                item.appendChild(tooltipDiv);
+                console.log(`✅ تمت إضافة tooltip للعنصر ${index + 1}`);
+
+                // إضافة events
+                item.addEventListener('mouseenter', () => {
+                    console.log(`Mouse enter on element ${index + 1}`);
+                    tooltipDiv.style.opacity = '1';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(0)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    tooltipDiv.style.opacity = '1';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(0)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    tooltipDiv.style.opacity = '0';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(10px)';
+                });
+            });
+        }
+
+        // تطبيق tooltips عند تحميل الصفحة - مع تأخير للتأكد من تحميل DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', addRightDockTooltips);
+        } else {
+            addRightDockTooltips();
+        }
+        
+        console.log('Right Dock Tooltips: Script loaded');
     </script>
 </body>
 </html>

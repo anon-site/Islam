@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار القائمتين</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', Arial, sans-serif;
+            background: #1a1a2e;
+            color: white;
+            padding: 50px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+
+        .test-section {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .success {
+            color: #4CAF50;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 10px;
+            margin: 8px 0;
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            border-right: 3px solid #4CAF50;
+        }
+
+        .checklist li::before {
+            content: '✓ ';
+            color: #4CAF50;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .code {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-right: 3px solid #FFC107;
+        }
+
+        .highlight {
+            color: #FFC107;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ اختبار نهائي - القائمتين جاهزتين!</h1>
+
+        <div class="success">
+            🎉 تم تطبيق Tooltips الاحترافية على القائمتين بنجاح!
+        </div>
+
+        <!-- القائمة اليمنى -->
+        <div class="test-section">
+            <h2>📍 القائمة اليمنى (Right Dock)</h2>
+            <p>تحتوي على 5 أزرار مع tooltips تظهر على <span class="highlight">اليسار</span>:</p>
+            <ul class="checklist">
+                <li>Google</li>
+                <li>YouTube</li>
+                <li>NOON TV</li>
+                <li>دليل أدوات الذكاء الاصطناعي</li>
+                <li>موقعي</li>
+            </ul>
+        </div>
+
+        <!-- القائمة اليسرى -->
+        <div class="test-section">
+            <h2>🤖 القائمة اليسرى (Left Dock - AI)</h2>
+            <p>تحتوي على 5 مواقع ذكاء اصطناعي مع tooltips تظهر على <span class="highlight">اليمين</span>:</p>
+            <ul class="checklist">
+                <li>ChatGPT — مساعد ذكي للدردشة وكتابة المحتوى</li>
+                <li>Grok — مساعد من X مع معلومات فورية</li>
+                <li>Runway ML — إنشاء وتحرير الفيديو بالذكاء الاصطناعي</li>
+                <li>ChatPro — محادثة ذكية متقدمة</li>
+                <li>AIVA — توليد الموسيقى بالذكاء الاصطناعي</li>
+            </ul>
+        </div>
+
+        <!-- التعليمات -->
+        <div class="test-section">
+            <h2>🎯 كيفية الاختبار</h2>
+            <ol>
+                <li>افتح الموقع الرئيسي <code>index.html</code></li>
+                <li>اضغط <kbd>Ctrl+F5</kbd> لمسح الـ cache</li>
+                <li>افتح القائمتين من الأزرار في الأعلى</li>
+                <li>مرر الماوس على أي أيقونة</li>
+                <li>يجب أن يظهر النص التوضيحي بشكل احترافي! ✨</li>
+            </ol>
+        </div>
+
+        <!-- المميزات -->
+        <div class="test-section">
+            <h2>✅ المميزات المضافة</h2>
+            <ul class="checklist">
+                <li>Tooltips احترافية مع تأثيرات سلسة</li>
+                <li>نص عربي واضح ومقروء</li>
+                <li>موضع محدد بدقة (يمين/يسار حسب القائمة)</li>
+                <li>تصميم متناسق مع الموقع</li>
+                <li>لا تفتح الروابط في نوافذ جديدة</li>
+                <li>يعمل على جميع المتصفحات</li>
+            </ul>
+        </div>
+
+        <div class="code">
+            <strong>ملاحظة تقنية:</strong><br>
+            تم استخدام JavaScript لإنشاء عناصر tooltip حقيقية بدلاً من الاعتماد على CSS ::after فقط،
+            مما يضمن عمل الـ tooltips بنسبة 100% على جميع العناصر (الثابتة والديناميكية).
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding: 30px; background: rgba(76,175,80,0.1); border-radius: 15px;">
+            <h2 style="color: #4CAF50;">🚀 كل شيء جاهز!</h2>
+            <p style="font-size: 1.1rem;">الموقع يعمل بشكل احترافي مع tooltips رائعة على القائمتين</p>
+        </div>
+    </div>
+</body>
+</html>

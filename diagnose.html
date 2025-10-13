@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تشخيص المشكلة</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #1a1a2e;
+            color: white;
+            padding: 30px;
+        }
+        .result {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .error {
+            color: #ff4444;
+        }
+        .success {
+            color: #44ff44;
+        }
+    </style>
+</head>
+<body>
+    <h1>تشخيص مشكلة القائمة اليمنى</h1>
+    <div id="results"></div>
+
+    <script>
+        const results = document.getElementById('results');
+        
+        // محاكاة الكود من الموقع الأصلي
+        function testRightDock() {
+            results.innerHTML = '<h2>بدء الفحص...</h2>';
+            
+            // Test 1: التحقق من وجود العناصر
+            const rightDock = document.querySelector('.rocket-dock');
+            if (!rightDock) {
+                results.innerHTML += '<div class="result error">❌ لم يتم العثور على .rocket-dock</div>';
+                return;
+            }
+            results.innerHTML += '<div class="result success">✅ تم العثور على .rocket-dock</div>';
+            
+            // Test 2: التحقق من العناصر داخلها
+            const items = rightDock.querySelectorAll('.dock-item');
+            results.innerHTML += `<div class="result success">✅ عدد العناصر: ${items.length}</div>`;
+            
+            // Test 3: التحقق من data-tooltip
+            items.forEach((item, i) => {
+                const tooltip = item.getAttribute('data-tooltip');
+                results.innerHTML += `<div class="result ${tooltip ? 'success' : 'error'}">
+                    ${tooltip ? '✅' : '❌'} عنصر ${i+1}: ${tooltip || 'لا يوجد tooltip'}
+                </div>`;
+            });
+            
+            // Test 4: محاولة إضافة tooltip
+            results.innerHTML += '<h3>محاولة إضافة tooltips...</h3>';
+            
+            items.forEach((item, i) => {
+                const tooltipText = item.getAttribute('data-tooltip');
+                if (!tooltipText) return;
+                
+                const tooltipDiv = document.createElement('div');
+                tooltipDiv.className = 'test-tooltip';
+                tooltipDiv.textContent = tooltipText;
+                tooltipDiv.style.cssText = `
+                    position: absolute;
+                    right: 65px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: red;
+                    color: white;
+                    padding: 10px;
+                    border-radius: 5px;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                    z-index: 99999;
+                `;
+                
+                item.style.position = 'relative';
+                item.appendChild(tooltipDiv);
+                
+                item.addEventListener('mouseenter', () => {
+                    tooltipDiv.style.opacity = '1';
+                });
+                item.addEventListener('mouseleave', () => {
+                    tooltipDiv.style.opacity = '0';
+                });
+                
+                results.innerHTML += `<div class="result success">✅ تمت إضافة tooltip للعنصر ${i+1}</div>`;
+            });
+        }
+        
+        // انتظر تحميل الصفحة
+        setTimeout(() => {
+            // أنشئ عناصر تجريبية
+            document.body.innerHTML += `
+                <div style="margin-top: 50px; padding: 20px; background: rgba(0,0,0,0.3);">
+                    <h2>اختبار مباشر:</h2>
+                    <div class="rocket-dock" style="display: flex; gap: 20px;">
+                        <a href="#" class="dock-item" data-tooltip="Google" style="position: relative; width: 50px; height: 50px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                            G
+                        </a>
+                        <a href="#" class="dock-item" data-tooltip="YouTube" style="position: relative; width: 50px; height: 50px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                            Y
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            testRightDock();
+        }, 500);
+    </script>
+</body>
+</html>
