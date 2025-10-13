@@ -1919,12 +1919,17 @@
             if (yEl) yEl.textContent = new Date().getFullYear();
         });
 
+        // أداة فحص الهاتف
+        function isMobileView() {
+            return (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) || window.innerWidth <= 768;
+        }
+
         // إعداد وضع التكبير/التصغير (Zoom Control)
         const zoomSlider = document.getElementById('zoom-slider');
         const zoomValue = document.querySelector('.zoom-value');
         const savedZoom = localStorage.getItem('zoom-level');
 
-        // تطبيق الإعداد المحفوظ عند التحميل
+        // تطبيق الإعداد المحفوظ عند التحميل أو قيمة افتراضية حسب الجهاز
         if (savedZoom) {
             const zoom = parseInt(savedZoom);
             zoomSlider.value = zoom;
@@ -1932,10 +1937,12 @@
             document.body.setAttribute('data-zoom', zoom);
             document.body.style.setProperty('--zoom-factor', zoom / 100);
         } else {
-            // القيمة الافتراضية
-            zoomValue.textContent = '100%';
-            document.body.setAttribute('data-zoom', '100');
-            document.body.style.setProperty('--zoom-factor', '1');
+            // القيمة الافتراضية: 65% على الهاتف، 100% على الحاسوب
+            const defaultZoom = isMobileView() ? 65 : 100;
+            zoomSlider.value = defaultZoom;
+            zoomValue.textContent = defaultZoom + '%';
+            document.body.setAttribute('data-zoom', String(defaultZoom));
+            document.body.style.setProperty('--zoom-factor', defaultZoom / 100);
         }
 
         // التعامل مع تغيير مستوى التكبير
@@ -2024,11 +2031,12 @@
                 // إزالة التحديد من خيارات الألوان
                 document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
 
-                // إعادة تعيين مستوى التكبير إلى 100%
-                zoomSlider.value = 100;
-                zoomValue.textContent = '100%';
-                document.body.setAttribute('data-zoom', '100');
-                document.body.style.setProperty('--zoom-factor', '1');
+                // إعادة تعيين مستوى التكبير (65% على الهاتف، 100% على الحاسوب)
+                const defaultZoom = (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) || window.innerWidth <= 768 ? 65 : 100;
+                zoomSlider.value = defaultZoom;
+                zoomValue.textContent = defaultZoom + '%';
+                document.body.setAttribute('data-zoom', String(defaultZoom));
+                document.body.style.setProperty('--zoom-factor', defaultZoom / 100);
                 localStorage.removeItem('zoom-level');
 
                 // حذف البيانات الأخرى المحفوظة
