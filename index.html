@@ -83,29 +83,6 @@
         }
 
 
-        /* RocketDock - شريط الأيقونات العمودي */
-        .rocket-dock {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 10000;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15));
-            padding: 15px 10px;
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .rocket-dock:hover {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.25));
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-        }
 
         .dock-item {
             width: 50px;
@@ -218,24 +195,129 @@
             transform: translateX(0);
         }
 
+        /* حاوية RocketDock مع الزر */
+        .dock-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* زر إغلاق/فتح RocketDock - فوق الشريط */
+        .dock-toggle-btn {
+            width: 70px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .dock-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(76, 175, 80, 0.4);
+            box-shadow: 0 -3px 12px rgba(76, 175, 80, 0.2);
+        }
+
+        .dock-toggle-btn i {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .dock-toggle-btn:hover i {
+            color: var(--primary-color);
+            text-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+        }
+
+        /* تحريك الأيقونة */
+        .dock-toggle-btn.closed i {
+            transform: rotate(180deg);
+        }
+
+        /* الزر يصبح دائري عندما يكون مغلق */
+        .dock-toggle-btn.closed {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* RocketDock - متصل بالزر */
+        .rocket-dock {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15));
+            padding: 15px 10px;
+            border-radius: 0 0 25px 25px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 500px;
+            overflow: hidden;
+        }
+
+        .rocket-dock.hidden {
+            max-height: 0;
+            padding: 0 10px;
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
         /* تجاوب للهاتف */
         @media (max-width: 768px) {
-            .rocket-dock {
+            .dock-container {
                 top: 10px;
                 right: 10px;
+            }
+
+            .dock-toggle-btn {
+                width: 56px;
+                height: 25px;
+            }
+
+            .dock-toggle-btn i {
+                font-size: 0.9rem;
+            }
+
+            .dock-toggle-btn.closed {
+                width: 40px;
+                height: 40px;
+            }
+
+            .rocket-dock {
                 padding: 10px 8px;
                 gap: 10px;
-                border-radius: 20px;
+                border-radius: 0 0 20px 20px;
             }
 
             .dock-item {
-                width: 40px;
-                height: 40px;
-                border-radius: 12px;
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
             }
 
             .dock-item i {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
 
             .dock-item::after {
@@ -538,63 +620,94 @@
         ========================================
         */
         @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+                width: 100%;
+            }
+
             .main-section {
                 min-height: 100vh;
-                padding: 15px 5px;
-                justify-content: center;
+                padding: 60px 8px 15px 8px;
+                justify-content: flex-start;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .main-content {
+                width: 100%;
+                padding: 0;
+                box-sizing: border-box;
             }
 
             .duas-section {
                 padding: 30px 10px;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             
             /* 1. الساعة والتاريخ */
             .digital-clock { 
-                font-size: 3.2rem;
-                margin-top: 10px;
-                margin-bottom: 8px;
+                font-size: 1rem !important;
+                margin-top: 5px;
+                margin-bottom: 10px;
+                word-break: keep-all;
             }
             .date-container { 
-                font-size: 0.9rem;
-                margin-bottom: 12px; 
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+                padding: 0 10px;
+                line-height: 1.6;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
             }
 
             /* 2. الصلاة القادمة */
             .next-prayer-container {
-                padding: 12px 14px;
-                margin-bottom: 15px;
-                max-width: 320px;
+                padding: 10px 12px;
+                margin: 10px auto 15px;
+                max-width: 90%;
+                width: auto;
             }
             .next-prayer-container h3 { 
-                font-size: 1rem; 
+                font-size: 0.95rem; 
                 margin-bottom: 5px;
             }
             .countdown { 
-                font-size: 1.6rem; 
+                font-size: 1.4rem; 
             }
 
             /* 3. البحث والمدينة */
             .search-wrapper {
-                width: 95%;
-                margin-bottom: 15px;
+                width: 96%;
+                max-width: none;
+                margin: 0 auto 15px;
                 flex-direction: row;
-                gap: 8px;
+                gap: 6px;
+                padding: 0;
             }
 
             #city-search {
-                padding: 12px 20px;
-                font-size: 1rem;
+                padding: 10px 15px;
+                font-size: 0.9rem;
                 background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1));
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px);
                 box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+                min-width: 0;
+                flex: 1;
+            }
+
+            #city-search::placeholder {
+                font-size: 0.85rem;
             }
 
             .search-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 1rem;
+                width: 42px;
+                height: 42px;
+                font-size: 0.95rem;
+                flex-shrink: 0;
             }
 
             .spinner {
@@ -605,53 +718,66 @@
             #city-search:focus {
                 background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.18));
                 box-shadow: 0 6px 25px rgba(76, 175, 80, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-                transform: translateY(-1px);
+                transform: none;
             }
 
             #city-search:hover {
                 background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.14));
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-                transform: translateY(-1px);
+                transform: none;
             }
             .city-name { 
-                font-size: 1.4rem;
+                font-size: 1.3rem;
                 margin-bottom: 15px;
+                padding: 0 10px;
+                word-wrap: break-word;
             }
 
             /* 4. بطاقات الصلاة */
             .prayer-times-container {
                 grid-template-columns: repeat(2, 1fr); 
-                gap: 10px;
+                gap: 8px;
                 margin-bottom: 15px;
-                width: 98%;
+                width: 96%;
+                max-width: none;
             }
             .prayer-card {
-                padding: 14px 8px;
+                padding: 12px 6px;
+                min-width: 0;
             }
             .prayer-name { 
-                font-size: 1rem; 
+                font-size: 0.95rem;
+                margin-bottom: 4px;
             }
             .prayer-time { 
-                font-size: 1.5rem;
+                font-size: 1.35rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- RocketDock - شريط الروابط السريعة -->
-    <div class="rocket-dock">
-        <a href="https://www.google.com/" class="dock-item google" data-tooltip="Google">
-            <i class="fab fa-google"></i>
-        </a>
-        <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="YouTube">
-            <i class="fab fa-youtube"></i>
-        </a>
-        <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="NOON TV">
-            <i class="fas fa-tv"></i>
-        </a>
-        <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي">
-            <i class="fas fa-user"></i>
-        </a>
+    <!-- RocketDock Container - الحاوية الرئيسية -->
+    <div class="dock-container">
+        <!-- زر إغلاق/فتح RocketDock -->
+        <button class="dock-toggle-btn" id="dock-toggle" title="إخفاء/إظهار القائمة">
+            <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <!-- RocketDock - شريط الروابط السريعة -->
+        <div class="rocket-dock" id="rocket-dock">
+            <a href="https://www.google.com/" class="dock-item google" data-tooltip="Google">
+                <i class="fab fa-google"></i>
+            </a>
+            <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="NOON TV">
+                <i class="fas fa-tv"></i>
+            </a>
+            <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي">
+                <i class="fas fa-user"></i>
+            </a>
+        </div>
     </div>
 
     <!-- السكشن الرئيسي: الساعة والتاريخ والمواقيت -->
@@ -849,16 +975,33 @@
         }
 
         @media (max-width: 768px) {
+            .prayer-section {
+                padding: 0 10px;
+            }
+
             .duas-container {
                 grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 0;
             }
             
             .section-title {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
+                padding: 0 5px;
+            }
+            
+            .dua-card {
+                padding: 15px;
+                margin: 0;
             }
             
             .dua-text {
-                font-size: 1rem;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .dua-reference {
+                font-size: 0.8rem;
             }
         }
 
@@ -882,6 +1025,15 @@
             opacity: 0;
             max-width: 90%;
             text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .notification {
+                top: 60px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                max-width: 85%;
+            }
         }
 
         .notification.show {
@@ -910,9 +1062,9 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 45px; /* تصغير الحجم من 60px إلى 45px */
+            width: 45px;
             height: 45px;
-            font-size: 18px; /* تصغير حجم الخط من 24px إلى 18px */
+            font-size: 18px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             z-index: 10000;
@@ -922,6 +1074,16 @@
         .settings-button:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .settings-button {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                left: 15px;
+                font-size: 20px;
+            }
         }
 
         .settings-panel {
@@ -948,6 +1110,22 @@
             transform: translateY(0);
             opacity: 1;
             visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .settings-panel {
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                bottom: 90px;
+                width: 90%;
+                max-width: 350px;
+                padding: 20px;
+                max-height: 60vh;
+            }
+
+            .settings-panel.show {
+                transform: translateX(-50%) translateY(0);
+            }
         }
 
         .settings-panel h3 {
@@ -1717,8 +1895,41 @@
             document.body.style.setProperty('--zoom-factor', '1');
             localStorage.removeItem('zoom-level');
 
-            // إغلاق لوحة الإعدادات بعد التصفير
+            // أغلاق لوحة الإعدادات بعد التصفير
             document.getElementById('settings-panel').classList.remove('show');
+        });
+
+        // وظيفة إخفاء/إظهار RocketDock
+        const dockToggleBtn = document.getElementById('dock-toggle');
+        const rocketDock = document.getElementById('rocket-dock');
+        let isDockVisible = true;
+
+        // تحميل الحالة المحفوظة
+        const savedDockState = localStorage.getItem('dock-visible');
+        if (savedDockState === 'false') {
+            isDockVisible = false;
+            rocketDock.classList.add('hidden');
+            dockToggleBtn.classList.add('closed');
+            dockToggleBtn.querySelector('i').classList.remove('fa-chevron-down');
+            dockToggleBtn.querySelector('i').classList.add('fa-chevron-up');
+        }
+
+        dockToggleBtn.addEventListener('click', function() {
+            isDockVisible = !isDockVisible;
+            
+            if (isDockVisible) {
+                rocketDock.classList.remove('hidden');
+                dockToggleBtn.classList.remove('closed');
+                dockToggleBtn.querySelector('i').classList.remove('fa-chevron-up');
+                dockToggleBtn.querySelector('i').classList.add('fa-chevron-down');
+                localStorage.setItem('dock-visible', 'true');
+            } else {
+                rocketDock.classList.add('hidden');
+                dockToggleBtn.classList.add('closed');
+                dockToggleBtn.querySelector('i').classList.remove('fa-chevron-down');
+                dockToggleBtn.querySelector('i').classList.add('fa-chevron-up');
+                localStorage.setItem('dock-visible', 'false');
+            }
         });
     </script>
 </body>
