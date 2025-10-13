@@ -876,9 +876,13 @@
         <h3>إعدادات التخصيص</h3>
         
         <div class="settings-group">
-            <label for="bg-url">رابط الخلفية:</label>
-            <input type="url" id="bg-url" placeholder="أدخل رابط صورة">
-            <button id="apply-bg">تطبيق</button>
+            <label for="bg-url">الخلفية من رابط أو رفع صورة:</label>
+            <div class="bg-input-row">
+                <input type="url" id="bg-url" placeholder="أدخل رابط صورة">
+                <button id="apply-bg" class="icon-btn" title="تطبيق من رابط"><i class="fas fa-link"></i></button>
+                <input type="file" id="bg-file" accept="image/*" style="display: none;">
+                <button id="upload-bg" class="icon-btn" title="رفع صورة"><i class="fas fa-upload"></i></button>
+            </div>
         </div>
         
         <div class="settings-group">
@@ -1171,6 +1175,45 @@
 
         .settings-group input[type="url"] {
             margin-bottom: 10px;
+        }
+
+        /* صف إدخال رابط الخلفية مع الأزرار */
+        .bg-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bg-input-row input[type="url"] {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        /* زر أيقونة صغير */
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .icon-btn i {
+            font-size: 16px;
+        }
+
+        .icon-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
         .settings-group button {
@@ -1791,6 +1834,30 @@
                 // حفظ في localStorage إذا أردت
                 localStorage.setItem('custom-bg', url);
             }
+        });
+
+        // فتح حوار رفع الصورة
+        document.getElementById('upload-bg').addEventListener('click', function() {
+            const fileInput = document.getElementById('bg-file');
+            if (fileInput) fileInput.click();
+        });
+
+        // تعيين الخلفية من الصورة المرفوعة
+        document.getElementById('bg-file').addEventListener('change', function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                alert('يرجى اختيار ملف صورة صالح.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const dataUrl = ev.target.result;
+                document.body.style.backgroundImage = `url('${dataUrl}')`;
+                // حفظ كـ Data URL لعملها بدون إنترنت
+                localStorage.setItem('custom-bg', dataUrl);
+            };
+            reader.readAsDataURL(file);
         });
 
         // تحميل الخلفية المخصصة إذا كانت موجودة
