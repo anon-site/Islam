@@ -39,7 +39,7 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background-image: var(--default-bg-url);
+            background-image: none; /* إزالة الخلفية الافتراضية */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -58,6 +58,13 @@
             background-color: rgba(0, 0, 0, 0.75);
             z-index: 1;
             pointer-events: none;
+        }
+        
+        /* ظل أقوى للهاتف */
+        @media (max-width: 768px) {
+            body::before {
+                background-color: rgba(0, 0, 0, 0.85);
+            }
         }
 
         /* السكشن الرئيسي - بحجم الشاشة الكامل */
@@ -328,11 +335,27 @@
         /* تنسيق الساعة (الافتراضي للشاشات الكبيرة) */
         .digital-clock {
             font-family: var(--font-english);
-            font-size: 6rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-size: 5.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
             text-shadow: 0 0 20px var(--primary-color), 0 0 30px rgba(255, 255, 255, 0.5);
             direction: ltr;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .clock-time {
+            font-size: inherit;
+        }
+        
+        .clock-period {
+            font-size: 2.2rem;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-left: 5px;
         }
 
         .date-container {
@@ -648,10 +671,16 @@
             
             /* 1. الساعة والتاريخ */
             .digital-clock { 
-                font-size: 1rem !important;
+                font-size: 2.5rem !important;
                 margin-top: 5px;
                 margin-bottom: 10px;
                 word-break: keep-all;
+                gap: 6px;
+            }
+            
+            .clock-period {
+                font-size: 1rem !important;
+                margin-left: 3px;
             }
             .date-container { 
                 font-size: 0.85rem;
@@ -869,6 +898,16 @@
         </div>
     </section>
 
+    <!-- Footer - حقوق النشر -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة © 2025</p>
+            <p class="designer-credit">
+                تصميم وتطوير: <a href="https://anon-site.github.io/" target="_blank" class="designer-link">Anon Design</a>
+            </p>
+        </div>
+    </footer>
+
     <!-- زر الإعدادات العائم -->
     <button class="settings-button" id="settings-toggle"><i class="fas fa-cog"></i></button>
 
@@ -876,23 +915,20 @@
         <h3>إعدادات التخصيص</h3>
         
         <div class="settings-group">
-            <label for="bg-url">رابط الخلفية:</label>
-            <input type="url" id="bg-url" placeholder="أدخل رابط صورة">
-            <button id="apply-bg">تطبيق</button>
+            <label for="bg-url">رابط الخلفية (يتم التطبيق تلقائياً):</label>
+            <div class="bg-input-wrapper">
+                <input type="url" id="bg-url" placeholder="أدخل رابط صورة أو فيديو">
+                <label for="bg-file-input" class="upload-icon" title="رفع ملف">
+                    <i class="fas fa-upload"></i>
+                </label>
+                <input type="file" id="bg-file-input" accept="image/*,video/*" style="display: none;">
+            </div>
         </div>
         
         <div class="settings-group">
             <label>تغيير الألوان:</label>
             <div class="color-picker" id="color-picker">
                 <!-- سيتم إضافة الخيارات عبر JS -->
-            </div>
-        </div>
-
-        <div class="settings-group">
-            <label for="compact-mode">تصغير حجم الموقع:</label>
-            <div class="zoom-control">
-                <input type="range" id="zoom-slider" class="zoom-slider" min="50" max="100" value="100" step="5">
-                <div class="zoom-value">100%</div>
             </div>
         </div>
 
@@ -1062,13 +1098,16 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 18px;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             z-index: 10000;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .settings-button:hover {
@@ -1078,11 +1117,12 @@
 
         @media (max-width: 768px) {
             .settings-button {
-                width: 50px;
-                height: 50px;
-                bottom: 15px;
-                left: 15px;
-                font-size: 20px;
+                width: 45px;
+                height: 45px;
+                bottom: 20px;
+                left: 20px;
+                font-size: 18px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
             }
         }
 
@@ -1169,9 +1209,6 @@
             box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
         }
 
-        .settings-group input[type="url"] {
-            margin-bottom: 10px;
-        }
 
         .settings-group button {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -1238,190 +1275,119 @@
             box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
         }
 
-        /* Toggle Switch for Compact Mode */
-        .toggle-switch {
+        /* Background Input Wrapper with Upload Icon */
+        .bg-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .bg-input-wrapper input[type="url"] {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .upload-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 10px;
-        }
-
-        .toggle-input {
-            display: none;
-        }
-
-        .toggle-label {
-            position: relative;
-            display: block;
-            width: 50px;
-            height: 25px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(76, 175, 80, 0.15));
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
         }
 
-        .toggle-label::after {
+        .upload-icon:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.5), rgba(76, 175, 80, 0.25));
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .upload-icon i {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            position: relative;
+            width: 100%;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.25));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            z-index: 2;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin: 8px 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .designer-credit {
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+        }
+
+        .designer-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 193, 7, 0.3);
+            position: relative;
+        }
+
+        .designer-link::after {
             content: '';
             position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 21px;
-            height: 21px;
-            background-color: #fff;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            transition: width 0.3s ease;
         }
 
-        .toggle-input:checked + .toggle-label {
-            background-color: var(--primary-color);
+        .designer-link:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
         }
 
-        .toggle-input:checked + .toggle-label::after {
-            transform: translateX(25px);
+        .designer-link:hover::after {
+            width: 100%;
         }
 
-        /* Zoom Control Styles */
-        .zoom-control {
-            display: flex;
-            align-items: center;
-            gap: 8px; /* تقليل المسافة */
-            margin-top: 10px;
-        }
+        @media (max-width: 768px) {
+            .site-footer {
+                padding: 15px 10px;
+                margin-top: 30px;
+            }
 
-        .zoom-slider {
-            flex: 1;
-            height: 6px; /* تصغير الارتفاع قليلاً */
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3));
-            border-radius: 3px;
-            outline: none;
-            -webkit-appearance: none;
-            transition: all 0.3s ease;
-        }
+            .footer-content p {
+                font-size: 0.8rem;
+            }
 
-        .zoom-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px; /* تصغير الحجم */
-            height: 18px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .zoom-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        .zoom-slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50%;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .zoom-value {
-            min-width: 35px; /* تقليل العرض */
-            text-align: center;
-            font-size: 0.85rem; /* تصغير حجم الخط */
-            color: var(--secondary-color);
-            font-weight: 600;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Dynamic Zoom Styles */
-        body[data-zoom="50"] .digital-clock {
-            font-size: 3rem !important;
-        }
-
-        body[data-zoom="55"] .digital-clock {
-            font-size: 3.3rem !important;
-        }
-
-        body[data-zoom="60"] .digital-clock {
-            font-size: 3.6rem !important;
-        }
-
-        body[data-zoom="65"] .digital-clock {
-            font-size: 3.9rem !important;
-        }
-
-        body[data-zoom="70"] .digital-clock {
-            font-size: 4.2rem !important;
-        }
-
-        body[data-zoom="75"] .digital-clock {
-            font-size: 4.5rem !important;
-        }
-
-        body[data-zoom="80"] .digital-clock {
-            font-size: 4.8rem !important;
-        }
-
-        body[data-zoom="85"] .digital-clock {
-            font-size: 5.1rem !important;
-        }
-
-        body[data-zoom="90"] .digital-clock {
-            font-size: 5.4rem !important;
-        }
-
-        body[data-zoom="95"] .digital-clock {
-            font-size: 5.7rem !important;
-        }
-
-        body[data-zoom="100"] .digital-clock {
-            font-size: 6rem !important;
-        }
-
-        /* Apply zoom to other elements proportionally */
-        body[data-zoom] .city-name {
-            font-size: calc(2rem * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .date-container {
-            font-size: calc(1.2rem * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .next-prayer-container {
-            padding: calc(12px * (var(--zoom-factor, 1))) calc(18px * (var(--zoom-factor, 1))) !important;
-            max-width: calc(300px * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .next-prayer-container h3 {
-            font-size: calc(1.2rem * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .countdown {
-            font-size: calc(1.8rem * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] #city-search {
-            padding: calc(15px * (var(--zoom-factor, 1))) calc(25px * (var(--zoom-factor, 1))) !important;
-            font-size: calc(1.2rem * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .prayer-times-container {
-            gap: calc(18px * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .prayer-card {
-            padding: calc(18px * (var(--zoom-factor, 1))) calc(12px * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .prayer-name {
-            font-size: calc(1.2rem * (var(--zoom-factor, 1))) !important;
-        }
-
-        body[data-zoom] .prayer-time {
-            font-size: calc(1.8rem * (var(--zoom-factor, 1))) !important;
+            .designer-credit {
+                font-size: 0.85rem !important;
+            }
         }
     </style>
 
@@ -1449,9 +1415,21 @@
         // **1. وظائف الساعة والتاريخ**
         function updateClockAndDate() {
             const now = new Date();
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            const timeString = now.toLocaleTimeString('en-US', timeOptions);
-            document.getElementById('clock').textContent = timeString;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            // تحويل إلى نظام 12 ساعة
+            const period = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 تصبح 12
+            const hoursStr = String(hours).padStart(2, '0');
+            
+            // عرض الوقت مع AM/PM
+            document.getElementById('clock').innerHTML = `
+                <span class="clock-time">${hoursStr}:${minutes}:${seconds}</span>
+                <span class="clock-period">${period}</span>
+            `;
 
             const englishDateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
             const englishDateString = now.toLocaleDateString('en-US', englishDateOptions);
@@ -1783,52 +1761,424 @@
             }
         });
 
-        // تطبيق خلفية من رابط
-        document.getElementById('apply-bg').addEventListener('click', function() {
-            const url = document.getElementById('bg-url').value;
-            if (url) {
-                document.body.style.backgroundImage = `url('${url}')`;
-                // حفظ في localStorage إذا أردت
-                localStorage.setItem('custom-bg', url);
-            }
+        // تطبيق خلفية من رابط تلقائياً
+        const bgUrlInput = document.getElementById('bg-url');
+        let bgUrlTimeout;
+        
+        bgUrlInput.addEventListener('input', function() {
+            // إلغاء التايمر السابق إذا كان المستخدم مازال يكتب
+            clearTimeout(bgUrlTimeout);
+            
+            // انتظار 500ms بعد توقف الكتابة ثم التطبيق
+            bgUrlTimeout = setTimeout(() => {
+                const url = bgUrlInput.value.trim();
+                
+                if (url) {
+                    // حذف الفيديو إن وجد
+                    const videoElement = document.getElementById('background-video');
+                    if (videoElement) {
+                        videoElement.remove();
+                    }
+                    
+                    // تطبيق الخلفية
+                    document.body.style.backgroundImage = `url('${url}')`;
+                    localStorage.setItem('custom-bg', url);
+                    localStorage.setItem('custom-bg-type', 'url');
+                    localStorage.removeItem('custom-bg-source');
+                    localStorage.removeItem('custom-bg-name');
+                    
+                    console.log('✅ تم تطبيق الخلفية تلقائياً');
+                }
+            }, 500);
+        });
+        
+        // تطبيق فوري عند لصق الرابط
+        bgUrlInput.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                const url = bgUrlInput.value.trim();
+                if (url) {
+                    const videoElement = document.getElementById('background-video');
+                    if (videoElement) {
+                        videoElement.remove();
+                    }
+                    
+                    document.body.style.backgroundImage = `url('${url}')`;
+                    localStorage.setItem('custom-bg', url);
+                    localStorage.setItem('custom-bg-type', 'url');
+                    localStorage.removeItem('custom-bg-source');
+                    localStorage.removeItem('custom-bg-name');
+                    
+                    console.log('✅ تم تطبيق الخلفية بعد اللصق');
+                }
+            }, 100);
         });
 
-        // تحميل الخلفية المخصصة إذا كانت موجودة
-        window.addEventListener('load', function() {
-            const savedBg = localStorage.getItem('custom-bg');
-            if (savedBg) {
-                document.body.style.backgroundImage = `url('${savedBg}')`;
-                document.getElementById('bg-url').value = savedBg;
-            }
-        });
+        // إعداد IndexedDB لحفظ الفيديو
+        let db = null;
+        const dbName = 'IslamTimeDB';
+        const storeName = 'backgroundMedia';
+        const dbVersion = 2; // زيادة الإصدار لإعادة الإنشاء
 
-        // إعداد وضع التكبير/التصغير (Zoom Control)
-        const zoomSlider = document.getElementById('zoom-slider');
-        const zoomValue = document.querySelector('.zoom-value');
-        const savedZoom = localStorage.getItem('zoom-level');
-
-        // تطبيق الإعداد المحفوظ عند التحميل
-        if (savedZoom) {
-            const zoom = parseInt(savedZoom);
-            zoomSlider.value = zoom;
-            zoomValue.textContent = zoom + '%';
-            document.body.setAttribute('data-zoom', zoom);
-            document.body.style.setProperty('--zoom-factor', zoom / 100);
-        } else {
-            // القيمة الافتراضية
-            zoomValue.textContent = '100%';
-            document.body.setAttribute('data-zoom', '100');
-            document.body.style.setProperty('--zoom-factor', '1');
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                console.log('Opening IndexedDB...');
+                const request = indexedDB.open(dbName, dbVersion);
+                
+                request.onerror = (e) => {
+                    console.error('DB open error:', e);
+                    reject(request.error);
+                };
+                
+                request.onsuccess = (e) => {
+                    db = request.result;
+                    console.log('✅ DB opened successfully');
+                    resolve(db);
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    console.log('Upgrading DB...');
+                    const database = event.target.result;
+                    
+                    // حذف القديم وإنشاء جديد
+                    if (database.objectStoreNames.contains(storeName)) {
+                        database.deleteObjectStore(storeName);
+                        console.log('Old store deleted');
+                    }
+                    const objectStore = database.createObjectStore(storeName, { keyPath: 'id' });
+                    console.log('New store created');
+                };
+            });
         }
 
-        // التعامل مع تغيير مستوى التكبير
-        zoomSlider.addEventListener('input', function() {
-            const zoom = this.value;
-            zoomValue.textContent = zoom + '%';
-            document.body.setAttribute('data-zoom', zoom);
-            document.body.style.setProperty('--zoom-factor', zoom / 100);
-            localStorage.setItem('zoom-level', zoom);
-        });
+        async function saveToIndexedDB(file, type) {
+            return new Promise((resolve, reject) => {
+                console.log('Starting to save file:', file.name, 'size:', file.size);
+                
+                const reader = new FileReader();
+                
+                reader.onload = async function(event) {
+                    try {
+                        // التأكد من وجود DB
+                        if (!db) {
+                            console.log('DB not initialized, initializing now...');
+                            await initDB();
+                        }
+                        
+                        const arrayBuffer = event.target.result;
+                        console.log('ArrayBuffer size:', arrayBuffer.byteLength);
+                        
+                        const transaction = db.transaction([storeName], 'readwrite');
+                        const store = transaction.objectStore(storeName);
+                        
+                        const data = { 
+                            id: 'background',
+                            fileData: arrayBuffer,
+                            fileType: file.type,
+                            fileName: file.name,
+                            mediaType: type,
+                            savedAt: new Date().toISOString()
+                        };
+                        
+                        const request = store.put(data);
+                        
+                        request.onsuccess = () => {
+                            console.log('✅ File saved to IndexedDB successfully!');
+                            resolve();
+                        };
+                        
+                        request.onerror = (e) => {
+                            console.error('❌ IndexedDB put error:', e);
+                            reject(request.error);
+                        };
+                        
+                        transaction.oncomplete = () => {
+                            console.log('Transaction completed');
+                        };
+                        
+                        transaction.onerror = (e) => {
+                            console.error('Transaction error:', e);
+                            reject(transaction.error);
+                        };
+                        
+                    } catch (err) {
+                        console.error('❌ Save error:', err);
+                        reject(err);
+                    }
+                };
+                
+                reader.onerror = (e) => {
+                    console.error('❌ FileReader error:', e);
+                    reject(reader.error);
+                };
+                
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        async function loadFromIndexedDB() {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    // التأكد من وجود DB
+                    if (!db) {
+                        console.log('DB not ready, initializing...');
+                        await initDB();
+                    }
+                    
+                    console.log('Loading from IndexedDB...');
+                    const transaction = db.transaction([storeName], 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.get('background');
+                    
+                    request.onsuccess = () => {
+                        const data = request.result;
+                        console.log('Data retrieved:', data ? 'Found' : 'Not found');
+                        
+                        if (data && data.fileData) {
+                            console.log('File info:', data.fileName, data.fileType, 'saved at:', data.savedAt);
+                            const blob = new Blob([data.fileData], { type: data.fileType });
+                            console.log('Blob created, size:', blob.size);
+                            resolve({
+                                blob: blob,
+                                type: data.mediaType,
+                                name: data.fileName
+                            });
+                        } else {
+                            console.warn('No data in IndexedDB');
+                            resolve(null);
+                        }
+                    };
+                    
+                    request.onerror = (e) => {
+                        console.error('❌ Load error:', e);
+                        reject(request.error);
+                    };
+                } catch (err) {
+                    console.error('❌ Exception during load:', err);
+                    reject(err);
+                }
+            });
+        }
+
+        function deleteFromIndexedDB() {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    resolve();
+                    return;
+                }
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.delete('background');
+                
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // تهيئة IndexedDB عند التحميل - بشكل فوري
+        (async function() {
+            try {
+                await initDB();
+                console.log('IndexedDB ready!');
+            } catch (err) {
+                console.error('Failed to init IndexedDB:', err);
+            }
+        })();
+
+        // وظيفة رفع ملف الخلفية
+        const bgFileInput = document.getElementById('bg-file-input');
+        if (bgFileInput) {
+            bgFileInput.addEventListener('change', async function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const isImage = file.type.startsWith('image/');
+                const isVideo = file.type.startsWith('video/');
+                
+                if (!isImage && !isVideo) {
+                    alert('يرجى اختيار ملف صورة أو فيديو');
+                    return;
+                }
+                
+                if (isVideo) {
+                    // معالجة الفيديو مباشرة بدون FileReader
+                    let videoElement = document.getElementById('background-video');
+                    if (!videoElement) {
+                        videoElement = document.createElement('video');
+                        videoElement.id = 'background-video';
+                        videoElement.style.cssText = `
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            z-index: 0;
+                        `;
+                        videoElement.autoplay = true;
+                        videoElement.loop = true;
+                        videoElement.muted = true;
+                        document.body.insertBefore(videoElement, document.body.firstChild);
+                    }
+                    
+                    // عرض الفيديو مباشرة
+                    const blobUrl = URL.createObjectURL(file);
+                    videoElement.src = blobUrl;
+                    document.body.style.backgroundImage = 'none';
+                    document.getElementById('bg-url').value = file.name;
+                    
+                    // حفظ الفيديو في IndexedDB
+                    try {
+                        // التأكد من تهيئة DB
+                        if (!db) {
+                            console.log('Initializing DB...');
+                            await initDB();
+                        }
+                        
+                        console.log('Saving video to IndexedDB...');
+                        await saveToIndexedDB(file, 'video');
+                        localStorage.setItem('custom-bg-type', 'video');
+                        localStorage.setItem('custom-bg-name', file.name);
+                        localStorage.setItem('custom-bg-source', 'indexeddb');
+                        
+                        console.log('✅ تم حفظ الفيديو بنجاح!');
+                    } catch (err) {
+                        console.error('❌ Error saving video:', err);
+                        console.warn('⚠️ الفيديو يعمل الآن لكن لن يتم حفظه بعد إغلاق المتصفح');
+                    }
+                    return;
+                }
+                
+                // معالجة الصور
+                if (isImage) {
+                    const reader = new FileReader();
+                    reader.onload = async function(event) {
+                        const dataUrl = event.target.result;
+                            
+                        // تطبيق الصورة كخلفية
+                        document.body.style.backgroundImage = `url('${dataUrl}')`;
+                        document.getElementById('bg-url').value = file.name;
+                        
+                        // حفظ الصور في localStorage
+                        try {
+                            localStorage.setItem('custom-bg', dataUrl);
+                            localStorage.setItem('custom-bg-type', 'image');
+                            localStorage.setItem('custom-bg-name', file.name);
+                            console.log('✅ تم حفظ الصورة بنجاح');
+                        } catch (e) {
+                            // إذا كانت الصورة كبيرة، احفظها في IndexedDB
+                            try {
+                                if (!db) await initDB();
+                                await saveToIndexedDB(file, 'image');
+                                localStorage.setItem('custom-bg-type', 'image');
+                                localStorage.setItem('custom-bg-name', file.name);
+                                localStorage.setItem('custom-bg-source', 'indexeddb');
+                                console.log('✅ تم حفظ الصورة في IndexedDB');
+                            } catch (dbError) {
+                                console.error('Error saving to IndexedDB:', dbError);
+                            }
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // تحميل الخلفية فوراً قبل عرض الصفحة
+        (async function loadBackgroundEarly() {
+            const savedBg = localStorage.getItem('custom-bg');
+            const savedBgType = localStorage.getItem('custom-bg-type');
+            const savedBgSource = localStorage.getItem('custom-bg-source');
+            const savedBgName = localStorage.getItem('custom-bg-name');
+            
+            // التحقق من وجود ملف في IndexedDB
+            if (savedBgSource === 'indexeddb' && savedBgType) {
+                try {
+                    // انتظار تهيئة DB إذا لم تكن جاهزة
+                    if (!db) await initDB();
+                    
+                    console.log('Loading from IndexedDB...');
+                    const data = await loadFromIndexedDB();
+                    
+                    if (data && data.blob) {
+                        console.log('Data loaded from IndexedDB:', data.name);
+                        const blobUrl = URL.createObjectURL(data.blob);
+                        
+                        if (savedBgType === 'video' || data.type === 'video') {
+                            // إعادة تحميل الفيديو
+                            let videoElement = document.getElementById('background-video');
+                            if (!videoElement) {
+                                videoElement = document.createElement('video');
+                                videoElement.id = 'background-video';
+                                videoElement.style.cssText = `
+                                    position: fixed;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    z-index: 0;
+                                `;
+                                videoElement.autoplay = true;
+                                videoElement.loop = true;
+                                videoElement.muted = true;
+                                document.body.insertBefore(videoElement, document.body.firstChild);
+                            }
+                            videoElement.src = blobUrl;
+                            document.body.style.backgroundImage = 'none';
+                            console.log('✅ تم تحميل الفيديو بنجاح!');
+                        } else if (savedBgType === 'image' || data.type === 'image') {
+                            // إعادة تحميل الصورة
+                            document.body.style.backgroundImage = `url('${blobUrl}')`;
+                            console.log('✅ تم تحميل الصورة بنجاح!');
+                        }
+                        document.getElementById('bg-url').value = data.name || savedBgName || 'ملف محفوظ';
+                    } else {
+                        console.warn('No data found in IndexedDB');
+                    }
+                } catch (err) {
+                    console.error('❌ Error loading from IndexedDB:', err);
+                }
+            } else if (savedBg) {
+                // التحميل من localStorage (للروابط والصور الصغيرة)
+                if (savedBgType === 'video') {
+                    let videoElement = document.getElementById('background-video');
+                    if (!videoElement) {
+                        videoElement = document.createElement('video');
+                        videoElement.id = 'background-video';
+                        videoElement.style.cssText = `
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            z-index: 0;
+                        `;
+                        videoElement.autoplay = true;
+                        videoElement.loop = true;
+                        videoElement.muted = true;
+                        document.body.insertBefore(videoElement, document.body.firstChild);
+                    }
+                    videoElement.src = savedBg;
+                    document.body.style.backgroundImage = 'none';
+                } else {
+                    document.body.style.backgroundImage = `url('${savedBg}')`;
+                }
+                
+                // عرض الاسم أو الرابط في حقل الإدخال
+                if (savedBgType === 'url') {
+                    document.getElementById('bg-url').value = savedBg;
+                } else {
+                    document.getElementById('bg-url').value = savedBgName || 'ملف محفوظ';
+                }
+            }
+            
+            // تطبيق الخلفية الافتراضية إذا لم يوجد شيء محفوظ
+            if (!savedBg && !savedBgSource) {
+                document.body.style.backgroundImage = "url('https://img.pikbest.com/backgrounds/20250120/arabic-ornamental-patterned-background-of-islamic-mosque_11422525.jpg!w700wp')";
+            }
+        })();
+
 
         // خيارات الألوان
         const colorSchemes = [
@@ -1873,30 +2223,73 @@
             }
         });
 
+        // وظيفة حذف جميع الكوكيز
+        function deleteAllCookies() {
+            const cookies = document.cookie.split(";");
+            
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                
+                // حذف الكوكي من جميع المسارات
+                document.cookie = name.trim() + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+                document.cookie = name.trim() + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=" + location.hostname;
+                document.cookie = name.trim() + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=." + location.hostname;
+            }
+            
+            console.log('✅ تم حذف جميع الكوكيز');
+        }
+
         // وظيفة تصفير الإعدادات
-        document.getElementById('reset-settings').addEventListener('click', function() {
+        document.getElementById('reset-settings').addEventListener('click', async function() {
+            // إزالة الفيديو إن وُجد
+            const videoElement = document.getElementById('background-video');
+            if (videoElement) {
+                videoElement.remove();
+            }
+            
+            // حذف من IndexedDB
+            if (db) {
+                try {
+                    await deleteFromIndexedDB();
+                    console.log('✅ تم حذف البيانات من IndexedDB');
+                } catch (err) {
+                    console.error('❌ خطأ في حذف IndexedDB:', err);
+                }
+            }
+            
+            // حذف جميع الكوكيز
+            deleteAllCookies();
+            
+            // حذف جميع بيانات localStorage
+            localStorage.clear();
+            console.log('✅ تم حذف جميع بيانات localStorage');
+            
+            // حذف جميع بيانات sessionStorage
+            sessionStorage.clear();
+            console.log('✅ تم حذف جميع بيانات sessionStorage');
+            
             // إعادة تعيين الخلفية إلى الافتراضية
             document.body.style.backgroundImage = "url('https://img.pikbest.com/backgrounds/20250120/arabic-ornamental-patterned-background-of-islamic-mosque_11422525.jpg!w700wp')";
-            localStorage.removeItem('custom-bg');
             document.getElementById('bg-url').value = '';
 
             // إعادة تعيين الألوان إلى الافتراضية
             document.documentElement.style.setProperty('--primary-color', '#4CAF50');
             document.documentElement.style.setProperty('--secondary-color', '#FFC107');
             document.documentElement.style.setProperty('--highlight-color', '#E91E63');
-            localStorage.removeItem('color-scheme');
-            // إزالة التحديد من خيارات الألوان
             document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
 
-            // إعادة تعيين مستوى التكبير إلى 100%
-            zoomSlider.value = 100;
-            zoomValue.textContent = '100%';
-            document.body.setAttribute('data-zoom', '100');
-            document.body.style.setProperty('--zoom-factor', '1');
-            localStorage.removeItem('zoom-level');
-
-            // أغلاق لوحة الإعدادات بعد التصفير
+            // إغلاق لوحة الإعدادات
             document.getElementById('settings-panel').classList.remove('show');
+            
+            // رسالة نجاح
+            console.log('✅ تم تصفير جميع الإعدادات بنجاح!');
+            
+            // إعادة تحميل الصفحة لتطبيق التغييرات
+            setTimeout(() => {
+                location.reload();
+            }, 500);
         });
 
         // وظيفة إخفاء/إظهار RocketDock
