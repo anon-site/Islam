@@ -2175,11 +2175,15 @@
         // وظيفة إخفاء/إظهار RocketDock
         const dockToggleBtn = document.getElementById('dock-toggle');
         const rocketDock = document.getElementById('rocket-dock');
-        let isDockVisible = true;
+        let isDockVisible = false; // القيمة الافتراضية: مغلق
 
         // تحميل الحالة المحفوظة
         const savedDockState = localStorage.getItem('islam-dock-visible');
-        if (savedDockState === 'false') {
+        if (savedDockState === 'true') {
+            // إذا كان المحفوظ مفتوح، نفتحه
+            isDockVisible = true;
+        } else {
+            // الحالة الافتراضية: مغلق
             isDockVisible = false;
             rocketDock.classList.add('hidden');
             dockToggleBtn.classList.add('closed');
@@ -2210,11 +2214,15 @@
         // ==============================
         const aiDockToggleBtn = document.getElementById('ai-dock-toggle');
         const aiRocketDock = document.getElementById('ai-rocket-dock');
-        let isAIDockVisible = true;
+        let isAIDockVisible = false; // القيمة الافتراضية: مغلق
 
         // Load saved state for AI dock
         const savedAIDockState = localStorage.getItem('islam-ai-dock-visible');
-        if (savedAIDockState === 'false') {
+        if (savedAIDockState === 'true') {
+            // إذا كان المحفوظ مفتوح، نفتحه
+            isAIDockVisible = true;
+        } else {
+            // الحالة الافتراضية: مغلق
             isAIDockVisible = false;
             aiRocketDock.classList.add('hidden');
             aiDockToggleBtn.classList.add('closed');
