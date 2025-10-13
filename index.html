@@ -1778,9 +1778,9 @@
                     document.getElementById('city-search').value = '';
                     
                     // حفظ المدينة في localStorage
-                    localStorage.setItem('saved-city', currentCity);
-                    localStorage.setItem('saved-lat', defaultLatitude.toString());
-                    localStorage.setItem('saved-lon', defaultLongitude.toString());
+                    localStorage.setItem('islam-saved-city', currentCity);
+                    localStorage.setItem('islam-saved-lat', defaultLatitude.toString());
+                    localStorage.setItem('islam-saved-lon', defaultLongitude.toString());
                     
                     console.log('Search completed successfully!');
                     
@@ -1835,9 +1835,9 @@
 
         // **5. تحميل المدينة المحفوظة عند بدء التشغيل**
         function loadSavedCity() {
-            const savedCity = localStorage.getItem('saved-city');
-            const savedLat = localStorage.getItem('saved-lat');
-            const savedLon = localStorage.getItem('saved-lon');
+            const savedCity = localStorage.getItem('islam-saved-city');
+            const savedLat = localStorage.getItem('islam-saved-lat');
+            const savedLon = localStorage.getItem('islam-saved-lon');
             
             if (savedCity && savedLat && savedLon) {
                 currentCity = savedCity;
@@ -1876,7 +1876,7 @@
             if (url) {
                 document.body.style.backgroundImage = `url('${url}')`;
                 // حفظ في localStorage إذا أردت
-                localStorage.setItem('custom-bg', url);
+                localStorage.setItem('islam-custom-bg', url);
             }
         });
 
@@ -1899,14 +1899,14 @@
                 const dataUrl = ev.target.result;
                 document.body.style.backgroundImage = `url('${dataUrl}')`;
                 // حفظ كـ Data URL لعملها بدون إنترنت
-                localStorage.setItem('custom-bg', dataUrl);
+                localStorage.setItem('islam-custom-bg', dataUrl);
             };
             reader.readAsDataURL(file);
         });
 
         // تحميل الخلفية المخصصة إذا كانت موجودة
         window.addEventListener('load', function() {
-            const savedBg = localStorage.getItem('custom-bg');
+            const savedBg = localStorage.getItem('islam-custom-bg');
             if (savedBg) {
                 document.body.style.backgroundImage = `url('${savedBg}')`;
                 document.getElementById('bg-url').value = savedBg;
@@ -1927,7 +1927,7 @@
         // إعداد وضع التكبير/التصغير (Zoom Control)
         const zoomSlider = document.getElementById('zoom-slider');
         const zoomValue = document.querySelector('.zoom-value');
-        const savedZoom = localStorage.getItem('zoom-level');
+        const savedZoom = localStorage.getItem('islam-zoom-level');
 
         // تطبيق الإعداد المحفوظ عند التحميل أو قيمة افتراضية حسب الجهاز
         if (savedZoom) {
@@ -1951,7 +1951,7 @@
             zoomValue.textContent = zoom + '%';
             document.body.setAttribute('data-zoom', zoom);
             document.body.style.setProperty('--zoom-factor', zoom / 100);
-            localStorage.setItem('zoom-level', zoom);
+            localStorage.setItem('islam-zoom-level', zoom);
         });
 
         // خيارات الألوان
@@ -1975,14 +1975,14 @@
                 document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
                 div.classList.add('selected');
                 // حفظ في localStorage
-                localStorage.setItem('color-scheme', JSON.stringify(scheme));
+                localStorage.setItem('islam-color-scheme', JSON.stringify(scheme));
             });
             colorPicker.appendChild(div);
         });
 
         // تحميل نظام الألوان المحفوظ
         window.addEventListener('load', function() {
-            const savedScheme = localStorage.getItem('color-scheme');
+            const savedScheme = localStorage.getItem('islam-color-scheme');
             if (savedScheme) {
                 const scheme = JSON.parse(savedScheme);
                 document.documentElement.style.setProperty('--primary-color', scheme.primary);
@@ -2003,14 +2003,14 @@
             if (confirm('هل أنت متأكد من إرجاع جميع الإعدادات إلى حالتها الأصلية؟')) {
                 // إعادة تعيين الخلفية إلى الافتراضية
                 document.body.style.backgroundImage = "url('https://img.pikbest.com/backgrounds/20250120/arabic-ornamental-patterned-background-of-islamic-mosque_11422525.jpg!w700wp')";
-                localStorage.removeItem('custom-bg');
+                localStorage.removeItem('islam-custom-bg');
                 document.getElementById('bg-url').value = '';
 
                 // إعادة تعيين الألوان إلى الافتراضية
                 document.documentElement.style.setProperty('--primary-color', '#4CAF50');
                 document.documentElement.style.setProperty('--secondary-color', '#FFC107');
                 document.documentElement.style.setProperty('--highlight-color', '#E91E63');
-                localStorage.removeItem('color-scheme');
+                localStorage.removeItem('islam-color-scheme');
                 // إزالة التحديد من خيارات الألوان
                 document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
 
@@ -2020,18 +2020,15 @@
                 zoomValue.textContent = defaultZoom + '%';
                 document.body.setAttribute('data-zoom', String(defaultZoom));
                 document.body.style.setProperty('--zoom-factor', defaultZoom / 100);
-                localStorage.removeItem('zoom-level');
+                localStorage.removeItem('islam-zoom-level');
 
-                // حذف البيانات الأخرى المحفوظة
-                localStorage.removeItem('saved-city');
-                localStorage.removeItem('saved-lat');
-                localStorage.removeItem('saved-lon');
-                localStorage.removeItem('dock-visible');
+                // حذف البيانات الأخرى المحفوظة للموقع
+                localStorage.removeItem('islam-saved-city');
+                localStorage.removeItem('islam-saved-lat');
+                localStorage.removeItem('islam-saved-lon');
+                localStorage.removeItem('islam-dock-visible');
 
-                // تنظيف localStorage بالكامل
-                localStorage.clear();
-
-                // تنظيف sessionStorage أيضاً
+                // تنظيف sessionStorage المخصص للموقع فقط
                 sessionStorage.clear();
 
                 // عرض رسالة تأكيد
@@ -2053,7 +2050,7 @@
         let isDockVisible = true;
 
         // تحميل الحالة المحفوظة
-        const savedDockState = localStorage.getItem('dock-visible');
+        const savedDockState = localStorage.getItem('islam-dock-visible');
         if (savedDockState === 'false') {
             isDockVisible = false;
             rocketDock.classList.add('hidden');
@@ -2070,13 +2067,13 @@
                 dockToggleBtn.classList.remove('closed');
                 dockToggleBtn.querySelector('i').classList.remove('fa-chevron-up');
                 dockToggleBtn.querySelector('i').classList.add('fa-chevron-down');
-                localStorage.setItem('dock-visible', 'true');
+                localStorage.setItem('islam-dock-visible', 'true');
             } else {
                 rocketDock.classList.add('hidden');
                 dockToggleBtn.classList.add('closed');
                 dockToggleBtn.querySelector('i').classList.remove('fa-chevron-down');
                 dockToggleBtn.querySelector('i').classList.add('fa-chevron-up');
-                localStorage.setItem('dock-visible', 'false');
+                localStorage.setItem('islam-dock-visible', 'false');
             }
         });
     </script>
