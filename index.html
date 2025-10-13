@@ -1997,27 +1997,10 @@
             }
         });
 
-        // وظيفة حذف جميع الكوكيز
-        function clearAllCookies() {
-            const cookies = document.cookie.split(";");
-            for (let cookie of cookies) {
-                const eqPos = cookie.indexOf("=");
-                const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
-                if (name) {
-                    // حذف الكوكي للنطاق الحالي
-                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-                    // حذف الكوكي للنطاق الفرعي
-                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
-                    // حذف الكوكي للنطاق الرئيسي
-                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname.split('.').slice(-2).join('.');
-                }
-            }
-        }
-
-        // وظيفة تصفير الإعدادات وحذف الكوكيز
+        // وظيفة تصفير الإعدادات وإرجاع الموقع للحالة الأصلية
         document.getElementById('reset-settings').addEventListener('click', function() {
-            // تأكيد من المستخدم قبل الحذف
-            if (confirm('هل أنت متأكد من تصفير جميع الإعدادات وحذف الكوكيز؟ سيتم فقدان جميع البيانات المحفوظة.')) {
+            // تأكيد من المستخدم قبل التصفير
+            if (confirm('هل أنت متأكد من إرجاع جميع الإعدادات إلى حالتها الأصلية؟')) {
                 // إعادة تعيين الخلفية إلى الافتراضية
                 document.body.style.backgroundImage = "url('https://img.pikbest.com/backgrounds/20250120/arabic-ornamental-patterned-background-of-islamic-mosque_11422525.jpg!w700wp')";
                 localStorage.removeItem('custom-bg');
@@ -2048,14 +2031,11 @@
                 // تنظيف localStorage بالكامل
                 localStorage.clear();
 
-                // حذف جميع الكوكيز
-                clearAllCookies();
-
                 // تنظيف sessionStorage أيضاً
                 sessionStorage.clear();
 
                 // عرض رسالة تأكيد
-                alert('تم تصفير جميع الإعدادات وحذف الكوكيز بنجاح!');
+                alert('تم إرجاع جميع الإعدادات إلى الحالة الأصلية بنجاح!');
 
                 // أغلاق لوحة الإعدادات بعد التصفير
                 document.getElementById('settings-panel').classList.remove('show');
