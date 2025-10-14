@@ -1760,6 +1760,29 @@
             font-weight: 500;
             transition: all 0.3s ease;
         }
+        
+        /* تنسيق خاص لحقل اختيار اللون */
+        .dock-field input[type="color"] {
+            height: 45px;
+            padding: 4px;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dock-field input[type="color"]:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        .dock-field input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 2px;
+        }
+        
+        .dock-field input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 4px;
+        }
 
         /* تمييز حقل اسم الأيقونة */
         .item-custom-icon {
@@ -3033,11 +3056,11 @@
         
         // بيانات افتراضية للأشرطة
         const defaultRightDockItems = [
-            { id: 'google', title: 'Google', url: 'https://www.google.com/', icon: 'fab fa-google', tooltip: 'Google', class: 'google' },
-            { id: 'youtube', title: 'YouTube', url: 'https://www.youtube.com/', icon: 'fab fa-youtube', tooltip: 'YouTube', class: 'youtube' },
-            { id: 'tv', title: 'NOON TV', url: 'https://anon-site.github.io/noon.tv/', icon: 'fas fa-tv', tooltip: 'NOON TV', class: 'tv' },
-            { id: 'ai-tools', title: 'AI Tools', url: 'https://anon-site.github.io/ai-tools/', icon: 'fas fa-brain', tooltip: 'دليل أدوات الذكاء الاصطناعي', class: 'ai-tools' },
-            { id: 'portfolio', title: 'Portfolio', url: 'https://anon-site.github.io/', icon: 'fas fa-user', tooltip: 'موقعي', class: 'portfolio' }
+            { id: 'google', title: 'Google', url: 'https://www.google.com/', icon: 'fab fa-google', tooltip: 'Google', class: 'google', hoverColor: '#4285f4' },
+            { id: 'youtube', title: 'YouTube', url: 'https://www.youtube.com/', icon: 'fab fa-youtube', tooltip: 'YouTube', class: 'youtube', hoverColor: '#ff0000' },
+            { id: 'tv', title: 'NOON TV', url: 'https://anon-site.github.io/noon.tv/', icon: 'fas fa-tv', tooltip: 'NOON TV', class: 'tv', hoverColor: '#8b5cf6' },
+            { id: 'ai-tools', title: 'AI Tools', url: 'https://anon-site.github.io/ai-tools/', icon: 'fas fa-brain', tooltip: 'دليل أدوات الذكاء الاصطناعي', class: 'ai-tools', hoverColor: '#ec4899' },
+            { id: 'portfolio', title: 'Portfolio', url: 'https://anon-site.github.io/', icon: 'fas fa-user', tooltip: 'موقعي', class: 'portfolio', hoverColor: '#4CAF50' }
         ];
 
         // قائمة الأيقونات المتاحة
@@ -3221,6 +3244,13 @@
                         <label>الوصف (Tooltip)</label>
                         <input type="text" class="item-tooltip" value="${item.tooltip || ''}" placeholder="وصف مختصر">
                     </div>
+                    <div class="dock-field">
+                        <label>لون الأيقونة عند التمرير</label>
+                        <input type="color" class="item-hover-color" value="${item.hoverColor || '#4CAF50'}" title="اختر لون الأيقونة">
+                        <small style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 5px; display: block;">
+                            اللون الذي يظهر عند تمرير المؤشر فوق الأيقونة
+                        </small>
+                    </div>
                 </div>
             `;
             
@@ -3323,6 +3353,14 @@
             editor.querySelector('.item-tooltip').addEventListener('input', (e) => {
                 items[index].tooltip = e.target.value;
             });
+            
+            // تحديث لون الأيقونة
+            const colorInput = editor.querySelector('.item-hover-color');
+            if (colorInput) {
+                colorInput.addEventListener('input', (e) => {
+                    items[index].hoverColor = e.target.value;
+                });
+            }
         }
 
         // فتح نافذة التخصيص
@@ -3355,7 +3393,8 @@
                 title: 'عنصر جديد',
                 url: 'https://example.com',
                 icon: 'fas fa-link',
-                tooltip: 'عنصر جديد'
+                tooltip: 'عنصر جديد',
+                hoverColor: '#4CAF50'
             });
             renderDockItems();
         });
@@ -3366,7 +3405,8 @@
                 title: 'عنصر جديد',
                 url: 'https://example.com',
                 icon: 'fas fa-robot',
-                tooltip: 'عنصر جديد'
+                tooltip: 'عنصر جديد',
+                hoverColor: '#4CAF50'
             });
             renderDockItems();
         });
@@ -3477,11 +3517,53 @@
                 i.className = item.icon;
                 a.appendChild(i);
                 
+                // إضافة tooltip مخصص
+                const tooltipDiv = document.createElement('div');
+                tooltipDiv.className = 'custom-tooltip-right';
+                tooltipDiv.textContent = item.tooltip;
+                tooltipDiv.style.cssText = `
+                    position: absolute;
+                    right: 65px;
+                    background: rgba(0, 0, 0, 0.95);
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                    white-space: normal;
+                    line-height: 1.4;
+                    max-width: 260px;
+                    direction: rtl;
+                    text-align: right;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: all 0.3s ease;
+                    font-family: 'Cairo', sans-serif;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                    z-index: 10001;
+                    top: 50%;
+                    transform: translateY(-50%) translateX(10px);
+                `;
+                a.appendChild(tooltipDiv);
+                
+                // إضافة تأثير اللون المخصص
+                const color = item.hoverColor || '#4CAF50';
+                a.addEventListener('mouseenter', () => {
+                    a.style.background = `linear-gradient(145deg, ${hexToRgba(color, 0.3)}, ${hexToRgba(color, 0.15)})`;
+                    a.style.borderColor = color;
+                    i.style.color = color;
+                    tooltipDiv.style.opacity = '1';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(0)';
+                });
+                a.addEventListener('mouseleave', () => {
+                    a.style.background = '';
+                    a.style.borderColor = '';
+                    i.style.color = '';
+                    tooltipDiv.style.opacity = '0';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(10px)';
+                });
+                
                 rightDock.appendChild(a);
             });
-            
-            // إعادة إضافة tooltips
-            addRightDockTooltips();
         }
 
         // تحديث الشريط الأيسر
