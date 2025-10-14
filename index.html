@@ -2734,6 +2734,12 @@
                 localStorage.removeItem('islam-saved-lat');
                 localStorage.removeItem('islam-saved-lon');
                 localStorage.removeItem('islam-dock-visible');
+                localStorage.removeItem('islam-ai-dock-visible');
+                
+                // تصفير تخصيصات الأشرطة (RockDock)
+                localStorage.removeItem('islam-custom-right-dock');
+                localStorage.removeItem('islam-custom-left-dock');
+                console.log('✅ تم حذف تخصيصات الأشرطة');
 
                 // تنظيف sessionStorage المخصص للموقع فقط
                 sessionStorage.clear();
@@ -2742,7 +2748,7 @@
                 document.getElementById('settings-panel').classList.remove('show');
 
                 // عرض رسالة نجاح احترافية
-                showSuccessMessage('✨ تم تصفير الإعدادات بنجاح!', 'تم إرجاع جميع الإعدادات إلى الحالة الأصلية. جاري إعادة تحميل الصفحة...');
+                showSuccessMessage('✨ تم تصفير الإعدادات بنجاح!', 'تم إرجاع جميع الإعدادات إلى الحالة الأصلية:<br>• الخلفية والألوان<br>• حجم العرض<br>• أشرطة Rockdock<br>جاري إعادة تحميل الصفحة...');
 
                 // إعادة تحميل الصفحة لتطبيق التغييرات
                 setTimeout(() => {
