@@ -1,7 +1,0 @@
-[
-  { "title": "ChatGPT", "url": "https://chatgpt.com/", "icon": "fas fa-robot", "hoverColor": "#10A37F", "desc": "مساعد ذكي للدردشة وكتابة المحتوى وشرح الأكواد" },
-  { "title": "Grok", "url": "https://grok.x.ai/", "icon": "fas fa-bolt", "hoverColor": "#1DA1F2", "desc": "مساعد ذكاء اصطناعي من X (تويتر سابقاً) مع معلومات فورية" },
-  { "title": "Runway ML", "url": "https://runwayml.com/", "icon": "fas fa-video", "hoverColor": "#00FFA3", "desc": "منصة إنشاء وتحرير الفيديو بالذكاء الاصطناعي" },
-  { "title": "ChatPro", "url": "https://chat.ai-pro.org/chat/new", "icon": "fas fa-comments", "hoverColor": "#FF6B6B", "desc": "محادثة ذكية متقدمة مع واجهة احترافية" },
-  { "title": "AIVA", "url": "https://www.aiva.ai/", "icon": "fas fa-music", "hoverColor": "#FF4785", "desc": "مساعد ذكاء اصطناعي لتوليد الموسيقى والمقطوعات" }
-]
