@@ -78,8 +78,8 @@
     },
     {
       "id": "ai-4",
-      "title": "AIVA",
-      "url": "https://www.aiva.ai/",
+      "title": "Lyrics Into Song AI",
+      "url": "https://lyricsintosong.ai/ar/create",
       "icon": "fas fa-music",
       "tooltip": "مساعد ذكاء اصطناعي لتوليد الموسيقى والمقطوعات",
       "hoverColor": "#FF4785"
