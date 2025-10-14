@@ -1470,14 +1470,17 @@
             background: linear-gradient(135deg, var(--highlight-color), #c2185b);
             color: white;
             border: none;
-            padding: 10px 16px; /* تقليل الحشو قليلاً */
-            border-radius: 10px; /* زوايا أصغر قليلاً */
+            padding: 6px 12px; /* تصغير الحشو أكثر */
+            border-radius: 8px; /* زوايا أصغر */
             cursor: pointer;
-            font-size: 0.85rem; /* تصغير حجم الخط */
+            font-size: 0.75rem; /* تصغير حجم الخط أكثر */
             font-weight: 600;
-            width: 100%;
+            width: auto; /* تغيير العرض ليكون تلقائي */
+            min-width: 120px; /* حد أدنى للعرض */
+            display: block;
+            margin: 0 auto; /* توسيط الزر */
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
 
         .reset-button:hover {
