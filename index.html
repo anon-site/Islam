@@ -1761,6 +1761,21 @@
             transition: all 0.3s ease;
         }
 
+        /* تمييز حقل اسم الأيقونة */
+        .item-custom-icon {
+            background: rgba(33, 150, 243, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #64B5F6;
+        }
+
+        .item-custom-icon:focus {
+            background: rgba(33, 150, 243, 0.15);
+            border-color: #2196F3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+        }
+
         /* تحسين وضوح قائمة الأيقونات */
         .dock-field select {
             background: rgba(255, 255, 255, 0.2);
@@ -2835,7 +2850,7 @@
         // Fallback AI links in case fetching JSON fails
         const fallbackAILinks = [
             { title: 'ChatGPT', url: 'https://chatgpt.com/', icon: 'fas fa-robot', hoverColor: '#10A37F', desc: 'مساعد ذكي للدردشة وكتابة المحتوى وشرح الأكواد' },
-            { title: 'Grok', url: 'https://grok.x.ai/', icon: 'fas fa-bolt', hoverColor: '#1DA1F2', desc: 'مساعد ذكاء اصطناعي من X (تويتر سابقاً) مع معلومات فورية' },
+            { title: 'TempMail', url: 'https://temp-mail.org/en/', icon: 'fas fa-envelope', hoverColor: '#1DA1F2', desc: 'مساعد ذكاء اصطناعي من X (تويتر سابقاً) مع معلومات فورية' },
             { title: 'Runway ML', url: 'https://runwayml.com/', icon: 'fas fa-video', hoverColor: '#00FFA3', desc: 'منصة إنشاء وتحرير الفيديو بالذكاء الاصطناعي' },
             { title: 'ChatPro', url: 'https://chat.ai-pro.org/chat/new', icon: 'fas fa-comments', hoverColor: '#FF6B6B', desc: 'محادثة ذكية متقدمة مع واجهة احترافية' },
                     ];
@@ -3195,11 +3210,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="dock-field custom-icon-field" style="display: ${item.icon && !availableIcons.find(i => i.value === item.icon) || item.customIcon ? 'block' : 'none'};">
-                        <label>أيقونة مخصصة (مثل: fas fa-star)</label>
+                    <div class="dock-field custom-icon-field" style="display: block;">
+                        <label>اسم الأيقونة (مثل: fas fa-star)</label>
                         <input type="text" class="item-custom-icon" value="${item.customIcon || item.icon || ''}" placeholder="fas fa-star">
                         <small style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 5px; display: block;">
-                            استخدم FontAwesome classes مثل: fas fa-star, fab fa-google
+                            يتم ملؤه تلقائياً عند اختيار أيقونة من القائمة • يمكنك التعديل
                         </small>
                     </div>
                     <div class="dock-field">
@@ -3270,20 +3285,22 @@
             
             editor.querySelector('.item-icon').addEventListener('change', (e) => {
                 const customIconField = editor.querySelector('.custom-icon-field');
+                const customIconInput = editor.querySelector('.item-custom-icon');
                 const iconPreview = editor.querySelector('.icon-preview i');
                 
                 if (e.target.value === 'custom') {
                     // إظهار حقل الأيقونة المخصصة
                     customIconField.style.display = 'block';
-                    const customInput = editor.querySelector('.item-custom-icon');
-                    items[index].icon = customInput.value || 'fas fa-link';
+                    items[index].icon = customIconInput.value || 'fas fa-link';
                     if (iconPreview) {
                         iconPreview.className = items[index].icon;
                     }
                 } else {
-                    // إخفاء حقل الأيقونة المخصصة
-                    customIconField.style.display = 'none';
+                    // إخفاء حقل الأيقونة المخصصة وملؤه باسم الأيقونة
+                    customIconField.style.display = 'block'; // إظهاره دائماً لعرض اسم الأيقونة
+                    customIconInput.value = e.target.value; // ملء الحقل باسم الأيقونة
                     items[index].icon = e.target.value;
+                    items[index].customIcon = e.target.value;
                     if (iconPreview) {
                         iconPreview.className = e.target.value;
                     }
