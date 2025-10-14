@@ -1,0 +1,88 @@
+{
+  "version": "2.0",
+  "exportDate": "2025-10-14T04:54:00.000Z",
+  "rightDock": [
+    {
+      "id": "google",
+      "title": "Google",
+      "url": "https://www.google.com/",
+      "icon": "fab fa-google",
+      "tooltip": "Google",
+      "class": "google"
+    },
+    {
+      "id": "youtube",
+      "title": "YouTube",
+      "url": "https://www.youtube.com/",
+      "icon": "fab fa-youtube",
+      "tooltip": "YouTube",
+      "class": "youtube"
+    },
+    {
+      "id": "tv",
+      "title": "NOON TV",
+      "url": "https://anon-site.github.io/noon.tv/",
+      "icon": "fas fa-tv",
+      "tooltip": "NOON TV",
+      "class": "tv"
+    },
+    {
+      "id": "ai-tools",
+      "title": "AI Tools",
+      "url": "https://anon-site.github.io/ai-tools/",
+      "icon": "fas fa-brain",
+      "tooltip": "دليل أدوات الذكاء الاصطناعي",
+      "class": "ai-tools"
+    },
+    {
+      "id": "portfolio",
+      "title": "Portfolio",
+      "url": "https://anon-site.github.io/",
+      "icon": "fas fa-user",
+      "tooltip": "موقعي",
+      "class": "portfolio"
+    }
+  ],
+  "leftDock": [
+    {
+      "id": "ai-0",
+      "title": "ChatGPT",
+      "url": "https://chatgpt.com/",
+      "icon": "fas fa-robot",
+      "tooltip": "مساعد ذكي للدردشة وكتابة المحتوى وشرح الأكواد",
+      "hoverColor": "#10A37F"
+    },
+    {
+      "id": "ai-1",
+      "title": "Grok",
+      "url": "https://grok.x.ai/",
+      "icon": "fas fa-bolt",
+      "tooltip": "مساعد ذكاء اصطناعي من X (تويتر سابقاً) مع معلومات فورية",
+      "hoverColor": "#1DA1F2"
+    },
+    {
+      "id": "ai-2",
+      "title": "Runway ML",
+      "url": "https://runwayml.com/",
+      "icon": "fas fa-video",
+      "tooltip": "منصة إنشاء وتحرير الفيديو بالذكاء الاصطناعي",
+      "hoverColor": "#00FFA3"
+    },
+    {
+      "id": "ai-3",
+      "title": "ChatPro",
+      "url": "https://chat.ai-pro.org/chat/new",
+      "icon": "fas fa-comments",
+      "tooltip": "محادثة ذكية متقدمة مع واجهة احترافية",
+      "hoverColor": "#FF6B6B"
+    },
+    {
+      "id": "ai-4",
+      "title": "AIVA",
+      "url": "https://www.aiva.ai/",
+      "icon": "fas fa-music",
+      "tooltip": "مساعد ذكاء اصطناعي لتوليد الموسيقى والمقطوعات",
+      "hoverColor": "#FF4785"
+    }
+  ]
+}

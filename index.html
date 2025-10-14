@@ -1139,12 +1139,23 @@
             </div>
             
             <div class="dock-customize-footer">
-                <button class="save-dock-btn" id="save-dock-changes">
-                    <i class="fas fa-save"></i> حفظ التغييرات
-                </button>
-                <button class="cancel-dock-btn" id="cancel-dock-changes">
-                    <i class="fas fa-times-circle"></i> إلغاء
-                </button>
+                <div class="footer-left-buttons">
+                    <button class="export-dock-btn" id="export-dock-data" title="تصدير الإعدادات">
+                        <i class="fas fa-download"></i> تصدير
+                    </button>
+                    <button class="import-dock-btn" id="import-dock-data" title="استيراد الإعدادات">
+                        <i class="fas fa-upload"></i> استيراد
+                    </button>
+                    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                </div>
+                <div class="footer-right-buttons">
+                    <button class="save-dock-btn" id="save-dock-changes">
+                        <i class="fas fa-save"></i> حفظ التغييرات
+                    </button>
+                    <button class="cancel-dock-btn" id="cancel-dock-changes">
+                        <i class="fas fa-times-circle"></i> إلغاء
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1831,8 +1842,28 @@
             background: rgba(0, 0, 0, 0.3);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
             gap: 15px;
+        }
+
+        .footer-left-buttons,
+        .footer-right-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .dock-customize-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .footer-left-buttons,
+            .footer-right-buttons {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         .save-dock-btn,
@@ -1869,6 +1900,42 @@
         .cancel-dock-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(244, 67, 54, 0.5);
+        }
+
+        .export-dock-btn,
+        .import-dock-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-dock-btn {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .export-dock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+        }
+
+        .import-dock-btn {
+            background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+        }
+
+        .import-dock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.5);
         }
 
         .color-picker {
@@ -3282,7 +3349,80 @@
             renderDockItems();
         });
 
-        // حفذ التغييرات
+        // تصدير البيانات
+        document.getElementById('export-dock-data').addEventListener('click', () => {
+            const exportData = {
+                version: '2.0',
+                exportDate: new Date().toISOString(),
+                rightDock: customRightDockItems,
+                leftDock: customLeftDockItems
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            
+            // اسم الملف بالتنسيق المطلوب
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
+            link.download = `JS RockDock_${dateStr}.json`;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showNotification('تم تصدير البيانات بنجاح! 📥', 'success');
+        });
+
+        // استيراد البيانات
+        document.getElementById('import-dock-data').addEventListener('click', () => {
+            document.getElementById('import-file-input').click();
+        });
+
+        document.getElementById('import-file-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.name.endsWith('.json')) {
+                showNotification('يرجى اختيار ملف JSON فقط!', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    
+                    // التحقق من صحة البيانات
+                    if (!importedData.rightDock || !importedData.leftDock) {
+                        throw new Error('بيانات غير صحيحة');
+                    }
+                    
+                    // تحديث البيانات
+                    customRightDockItems = importedData.rightDock;
+                    customLeftDockItems = importedData.leftDock;
+                    
+                    // إعادة عرض العناصر
+                    renderDockItems();
+                    
+                    showNotification(`تم استيراد البيانات بنجاح! 📤<br>اليمين: ${customRightDockItems.length} | اليسار: ${customLeftDockItems.length}`, 'success');
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showNotification('خطأ في قراءة الملف! تأكد من صحة الملف.', 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+            // إعادة تعيين القيمة للسماح باستيراد نفس الملف مرة أخرى
+            e.target.value = '';
+        });
+
+        // حفظ التغييرات
         document.getElementById('save-dock-changes').addEventListener('click', () => {
             // حفض في localStorage
             localStorage.setItem('islam-custom-right-dock', JSON.stringify(customRightDockItems));
@@ -3392,7 +3532,14 @@
         function showNotification(message, type = 'success') {
             const notif = document.createElement('div');
             notif.className = `notification notification-${type} show`;
-            notif.textContent = message;
+            
+            // دعم HTML في الرسالة
+            if (message.includes('<br>') || message.includes('<')) {
+                notif.innerHTML = message;
+            } else {
+                notif.textContent = message;
+            }
+            
             document.body.appendChild(notif);
             
             setTimeout(() => {
