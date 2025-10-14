@@ -1095,7 +1095,57 @@
         </div>
 
         <div class="settings-group">
-            <button id="reset-settings" class="reset-button">تصفير الإعدادات</button>
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                <button id="reset-settings" class="reset-button">تصفير الإعدادات</button>
+                <button id="customize-dock" class="customize-dock-button" title="تخصيص أشرطة Rockdock">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تخصيص Rockdock -->
+    <div class="dock-customize-modal" id="dock-customize-modal">
+        <div class="dock-customize-container">
+            <div class="dock-customize-header">
+                <h2>تخصيص أشرطة Rockdock</h2>
+                <button class="close-modal" id="close-dock-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="dock-customize-body">
+                <!-- الشريط الأيمن -->
+                <div class="dock-section">
+                    <h3><i class="fas fa-arrow-left"></i> الشريط الأيمن</h3>
+                    <div id="right-dock-items" class="dock-items-list">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                    <button class="add-item-btn" id="add-right-item">
+                        <i class="fas fa-plus"></i> إضافة عنصر جديد
+                    </button>
+                </div>
+                
+                <!-- الشريط الأيسر -->
+                <div class="dock-section">
+                    <h3><i class="fas fa-arrow-right"></i> الشريط الأيسر (AI)</h3>
+                    <div id="left-dock-items" class="dock-items-list">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                    <button class="add-item-btn" id="add-left-item">
+                        <i class="fas fa-plus"></i> إضافة عنصر جديد
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dock-customize-footer">
+                <button class="save-dock-btn" id="save-dock-changes">
+                    <i class="fas fa-save"></i> حفظ التغييرات
+                </button>
+                <button class="cancel-dock-btn" id="cancel-dock-changes">
+                    <i class="fas fa-times-circle"></i> إلغاء
+                </button>
+            </div>
         </div>
 
     <style>
@@ -1486,6 +1536,339 @@
         .reset-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        /* زر تخصيص Rockdock */
+        .customize-dock-button {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-width: 40px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .customize-dock-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        /* نافذة تخصيص Rockdock */
+        .dock-customize-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dock-customize-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .dock-customize-container {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(0, 0, 0, 0.95));
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dock-customize-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dock-customize-header h2 {
+            margin: 0;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-modal {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .dock-customize-body {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .dock-customize-body {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+        }
+
+        .dock-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dock-section h3 {
+            color: var(--secondary-color);
+            margin: 0 0 15px 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dock-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .dock-item-editor {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .dock-item-editor:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary-color);
+        }
+
+        .dock-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .dock-item-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .dock-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dock-item-actions button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .dock-item-actions button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dock-item-actions .delete-btn:hover {
+            background: var(--highlight-color);
+        }
+
+        .dock-item-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dock-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .dock-field label {
+            color: #f0f0f0;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .dock-field input,
+        .dock-field select {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        /* تحسين وضوح قائمة الأيقونات */
+        .dock-field select {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .dock-field select option {
+            background: rgba(26, 26, 46, 0.98);
+            color: white;
+            padding: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* حاوية اختيار الأيقونة */
+        .icon-selector-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .icon-selector-wrapper select {
+            flex: 1;
+        }
+
+        .icon-preview {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(145deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.1));
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .icon-preview i {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .icon-preview:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .dock-field input:focus,
+        .dock-field select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .add-item-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.1));
+            border: 2px dashed rgba(76, 175, 80, 0.5);
+            border-radius: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .add-item-btn:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(76, 175, 80, 0.2));
+            border-color: var(--primary-color);
+        }
+
+        .dock-customize-footer {
+            padding: 20px 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .save-dock-btn,
+        .cancel-dock-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .save-dock-btn {
+            background: linear-gradient(135deg, var(--primary-color), #45a049);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .save-dock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .cancel-dock-btn {
+            background: linear-gradient(135deg, #f44336, #da190b);
+            color: white;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+        }
+
+        .cancel-dock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(244, 67, 54, 0.5);
         }
 
         .color-picker {
@@ -2475,7 +2858,11 @@
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
-        loadAIDock();
+        // تحميل AI Dock فقط إذا لم يكن هناك تخصيص محفوظ
+        const hasCustomLeftDock = localStorage.getItem('islam-custom-left-dock');
+        if (!hasCustomLeftDock) {
+            loadAIDock();
+        }
 
         // =========================================
         // إضافة tooltips للقائمة اليمنى (Right Dock)
@@ -2552,6 +2939,490 @@
         }
         
         console.log('Right Dock Tooltips: Script loaded');
+
+        // =========================================
+        // Rockdock Customization System
+        // =========================================
+        
+        // بيانات افتراضية للأشرطة
+        const defaultRightDockItems = [
+            { id: 'google', title: 'Google', url: 'https://www.google.com/', icon: 'fab fa-google', tooltip: 'Google', class: 'google' },
+            { id: 'youtube', title: 'YouTube', url: 'https://www.youtube.com/', icon: 'fab fa-youtube', tooltip: 'YouTube', class: 'youtube' },
+            { id: 'tv', title: 'NOON TV', url: 'https://anon-site.github.io/noon.tv/', icon: 'fas fa-tv', tooltip: 'NOON TV', class: 'tv' },
+            { id: 'ai-tools', title: 'AI Tools', url: 'https://anon-site.github.io/ai-tools/', icon: 'fas fa-brain', tooltip: 'دليل أدوات الذكاء الاصطناعي', class: 'ai-tools' },
+            { id: 'portfolio', title: 'Portfolio', url: 'https://anon-site.github.io/', icon: 'fas fa-user', tooltip: 'موقعي', class: 'portfolio' }
+        ];
+
+        // قائمة الأيقونات المتاحة
+        const availableIcons = [
+            { value: 'fab fa-google', label: 'Google' },
+            { value: 'fab fa-youtube', label: 'YouTube' },
+            { value: 'fab fa-facebook', label: 'Facebook' },
+            { value: 'fab fa-twitter', label: 'Twitter / X' },
+            { value: 'fab fa-instagram', label: 'Instagram' },
+            { value: 'fab fa-github', label: 'GitHub' },
+            { value: 'fab fa-linkedin', label: 'LinkedIn' },
+            { value: 'fab fa-tiktok', label: 'TikTok' },
+            { value: 'fab fa-snapchat', label: 'Snapchat' },
+            { value: 'fab fa-whatsapp', label: 'WhatsApp' },
+            { value: 'fab fa-telegram', label: 'Telegram' },
+            { value: 'fab fa-discord', label: 'Discord' },
+            { value: 'fab fa-reddit', label: 'Reddit' },
+            { value: 'fab fa-pinterest', label: 'Pinterest' },
+            { value: 'fab fa-twitch', label: 'Twitch' },
+            { value: 'fab fa-spotify', label: 'Spotify' },
+            { value: 'fab fa-amazon', label: 'Amazon' },
+            { value: 'fab fa-apple', label: 'Apple' },
+            { value: 'fab fa-microsoft', label: 'Microsoft' },
+            { value: 'fab fa-android', label: 'Android' },
+            { value: 'fab fa-steam', label: 'Steam' },
+            { value: 'fab fa-playstation', label: 'PlayStation' },
+            { value: 'fab fa-xbox', label: 'Xbox' },
+            { value: 'fab fa-windows', label: 'Windows' },
+            { value: 'fab fa-chrome', label: 'Chrome' },
+            { value: 'fab fa-firefox', label: 'Firefox' },
+            { value: 'fab fa-edge', label: 'Edge' },
+            { value: 'fab fa-opera', label: 'Opera' },
+            { value: 'fab fa-dropbox', label: 'Dropbox' },
+            { value: 'fab fa-slack', label: 'Slack' },
+            { value: 'fas fa-brain', label: 'AI/Brain' },
+            { value: 'fas fa-robot', label: 'Robot' },
+            { value: 'fas fa-tv', label: 'TV' },
+            { value: 'fas fa-video', label: 'Video' },
+            { value: 'fas fa-music', label: 'Music' },
+            { value: 'fas fa-user', label: 'User' },
+            { value: 'fas fa-users', label: 'Users' },
+            { value: 'fas fa-home', label: 'Home' },
+            { value: 'fas fa-envelope', label: 'Email' },
+            { value: 'fas fa-phone', label: 'Phone' },
+            { value: 'fas fa-mobile-alt', label: 'Mobile' },
+            { value: 'fas fa-shopping-cart', label: 'Shopping' },
+            { value: 'fas fa-shopping-bag', label: 'Shopping Bag' },
+            { value: 'fas fa-book', label: 'Book' },
+            { value: 'fas fa-graduation-cap', label: 'Education' },
+            { value: 'fas fa-comments', label: 'Chat' },
+            { value: 'fas fa-comment', label: 'Comment' },
+            { value: 'fas fa-bolt', label: 'Bolt' },
+            { value: 'fas fa-star', label: 'Star' },
+            { value: 'fas fa-heart', label: 'Heart' },
+            { value: 'fas fa-code', label: 'Code' },
+            { value: 'fas fa-terminal', label: 'Terminal' },
+            { value: 'fas fa-laptop', label: 'Laptop' },
+            { value: 'fas fa-desktop', label: 'Desktop' },
+            { value: 'fas fa-server', label: 'Server' },
+            { value: 'fas fa-database', label: 'Database' },
+            { value: 'fas fa-cloud', label: 'Cloud' },
+            { value: 'fas fa-download', label: 'Download' },
+            { value: 'fas fa-upload', label: 'Upload' },
+            { value: 'fas fa-link', label: 'Link' },
+            { value: 'fas fa-globe', label: 'Globe' },
+            { value: 'fas fa-map-marker-alt', label: 'Location' },
+            { value: 'fas fa-calendar', label: 'Calendar' },
+            { value: 'fas fa-clock', label: 'Clock' },
+            { value: 'fas fa-search', label: 'Search' },
+            { value: 'fas fa-cog', label: 'Settings' },
+            { value: 'fas fa-wrench', label: 'Wrench' },
+            { value: 'fas fa-tools', label: 'Tools' },
+            { value: 'fas fa-shield-alt', label: 'Shield' },
+            { value: 'fas fa-lock', label: 'Lock' },
+            { value: 'fas fa-unlock', label: 'Unlock' },
+            { value: 'fas fa-key', label: 'Key' },
+            { value: 'fas fa-fire', label: 'Fire' },
+            { value: 'fas fa-rocket', label: 'Rocket' },
+            { value: 'fas fa-gamepad', label: 'Game' },
+            { value: 'fas fa-dice', label: 'Dice' },
+            { value: 'fas fa-trophy', label: 'Trophy' },
+            { value: 'fas fa-gift', label: 'Gift' },
+            { value: 'fas fa-bullhorn', label: 'Megaphone' },
+            { value: 'fas fa-newspaper', label: 'News' },
+            { value: 'fas fa-camera', label: 'Camera' },
+            { value: 'fas fa-image', label: 'Image' },
+            { value: 'fas fa-film', label: 'Film' },
+            { value: 'fas fa-microphone', label: 'Microphone' },
+            { value: 'fas fa-headphones', label: 'Headphones' },
+            { value: 'fas fa-palette', label: 'Palette' },
+            { value: 'fas fa-paint-brush', label: 'Paint' },
+            { value: 'fas fa-pencil-alt', label: 'Pencil' },
+            { value: 'fas fa-pen', label: 'Pen' },
+            { value: 'fas fa-flask', label: 'Lab' },
+            { value: 'fas fa-atom', label: 'Atom' },
+            { value: 'fas fa-pizza-slice', label: 'Pizza' },
+            { value: 'fas fa-coffee', label: 'Coffee' },
+            { value: 'fas fa-utensils', label: 'Restaurant' },
+            { value: 'fas fa-briefcase', label: 'Business' },
+            { value: 'fas fa-chart-line', label: 'Chart' },
+            { value: 'fas fa-folder', label: 'Folder' },
+            { value: 'fas fa-file', label: 'File' },
+            { value: 'fas fa-save', label: 'Save' },
+            { value: 'fas fa-thumbs-up', label: 'Like' },
+            { value: 'fas fa-lightbulb', label: 'Idea' },
+            { value: 'fas fa-magic', label: 'Magic' },
+            { value: 'fas fa-infinity', label: 'Infinity' },
+            { value: 'custom', label: '🎨 أيقونة مخصصة' }
+        ];
+
+        let customRightDockItems = [];
+        let customLeftDockItems = [];
+
+        // تحميل البيانات المحفوظة
+        function loadCustomDockData() {
+            const savedRight = localStorage.getItem('islam-custom-right-dock');
+            const savedLeft = localStorage.getItem('islam-custom-left-dock');
+            
+            customRightDockItems = savedRight ? JSON.parse(savedRight) : [...defaultRightDockItems];
+            customLeftDockItems = savedLeft ? JSON.parse(savedLeft) : [...fallbackAILinks.map((item, idx) => ({
+                id: `ai-${idx}`,
+                title: item.title,
+                url: item.url,
+                icon: item.icon,
+                tooltip: item.desc || item.title,
+                hoverColor: item.hoverColor
+            }))];
+        }
+
+        // إنشاء عنصر تحرير
+        function createItemEditor(item, index, isLeft = false) {
+            const div = document.createElement('div');
+            div.className = 'dock-item-editor';
+            div.dataset.index = index;
+            
+            div.innerHTML = `
+                <div class="dock-item-header">
+                    <div class="dock-item-title">عنصر #${index + 1}</div>
+                    <div class="dock-item-actions">
+                        <button class="move-up-btn" title="تحريك للأعلى">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+                        <button class="move-down-btn" title="تحريك للأسفل">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <button class="delete-btn" title="حذف">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="dock-item-fields">
+                    <div class="dock-field">
+                        <label>العنوان</label>
+                        <input type="text" class="item-title" value="${item.title || ''}" placeholder="مثل: Google">
+                    </div>
+                    <div class="dock-field">
+                        <label>الرابط</label>
+                        <input type="url" class="item-url" value="${item.url || ''}" placeholder="https://example.com">
+                    </div>
+                    <div class="dock-field">
+                        <label>الأيقونة</label>
+                        <div class="icon-selector-wrapper">
+                            <select class="item-icon">
+                                ${availableIcons.map(ico => 
+                                    `<option value="${ico.value}" ${ico.value === item.icon || (ico.value === 'custom' && !availableIcons.find(i => i.value === item.icon)) ? 'selected' : ''}>${ico.label}</option>`
+                                ).join('')}
+                            </select>
+                            <div class="icon-preview">
+                                <i class="${item.icon || 'fas fa-link'}"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dock-field custom-icon-field" style="display: ${item.icon && !availableIcons.find(i => i.value === item.icon) || item.customIcon ? 'block' : 'none'};">
+                        <label>أيقونة مخصصة (مثل: fas fa-star)</label>
+                        <input type="text" class="item-custom-icon" value="${item.customIcon || item.icon || ''}" placeholder="fas fa-star">
+                        <small style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 5px; display: block;">
+                            استخدم FontAwesome classes مثل: fas fa-star, fab fa-google
+                        </small>
+                    </div>
+                    <div class="dock-field">
+                        <label>الوصف (Tooltip)</label>
+                        <input type="text" class="item-tooltip" value="${item.tooltip || ''}" placeholder="وصف مختصر">
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // تحديث قائمة العناصر
+        function renderDockItems() {
+            const rightContainer = document.getElementById('right-dock-items');
+            const leftContainer = document.getElementById('left-dock-items');
+            
+            rightContainer.innerHTML = '';
+            leftContainer.innerHTML = '';
+            
+            customRightDockItems.forEach((item, idx) => {
+                const editor = createItemEditor(item, idx, false);
+                rightContainer.appendChild(editor);
+                attachItemEditorEvents(editor, idx, false);
+            });
+            
+            customLeftDockItems.forEach((item, idx) => {
+                const editor = createItemEditor(item, idx, true);
+                leftContainer.appendChild(editor);
+                attachItemEditorEvents(editor, idx, true);
+            });
+        }
+
+        // إضافة أحداث للعنصر
+        function attachItemEditorEvents(editor, index, isLeft) {
+            const items = isLeft ? customLeftDockItems : customRightDockItems;
+            
+            // حذف
+            editor.querySelector('.delete-btn').addEventListener('click', () => {
+                items.splice(index, 1);
+                renderDockItems();
+            });
+            
+            // تحريك للأعلى
+            editor.querySelector('.move-up-btn').addEventListener('click', () => {
+                if (index > 0) {
+                    [items[index], items[index - 1]] = [items[index - 1], items[index]];
+                    renderDockItems();
+                }
+            });
+            
+            // تحريك للأسفل
+            editor.querySelector('.move-down-btn').addEventListener('click', () => {
+                if (index < items.length - 1) {
+                    [items[index], items[index + 1]] = [items[index + 1], items[index]];
+                    renderDockItems();
+                }
+            });
+            
+            // تحديث البيانات
+            editor.querySelector('.item-title').addEventListener('input', (e) => {
+                items[index].title = e.target.value;
+            });
+            
+            editor.querySelector('.item-url').addEventListener('input', (e) => {
+                items[index].url = e.target.value;
+            });
+            
+            editor.querySelector('.item-icon').addEventListener('change', (e) => {
+                const customIconField = editor.querySelector('.custom-icon-field');
+                const iconPreview = editor.querySelector('.icon-preview i');
+                
+                if (e.target.value === 'custom') {
+                    // إظهار حقل الأيقونة المخصصة
+                    customIconField.style.display = 'block';
+                    const customInput = editor.querySelector('.item-custom-icon');
+                    items[index].icon = customInput.value || 'fas fa-link';
+                    if (iconPreview) {
+                        iconPreview.className = items[index].icon;
+                    }
+                } else {
+                    // إخفاء حقل الأيقونة المخصصة
+                    customIconField.style.display = 'none';
+                    items[index].icon = e.target.value;
+                    if (iconPreview) {
+                        iconPreview.className = e.target.value;
+                    }
+                }
+            });
+            
+            // تحديث الأيقونة المخصصة
+            const customIconInput = editor.querySelector('.item-custom-icon');
+            if (customIconInput) {
+                customIconInput.addEventListener('input', (e) => {
+                    items[index].icon = e.target.value;
+                    items[index].customIcon = e.target.value;
+                    const iconPreview = editor.querySelector('.icon-preview i');
+                    if (iconPreview) {
+                        iconPreview.className = e.target.value;
+                    }
+                });
+            }
+            
+            editor.querySelector('.item-tooltip').addEventListener('input', (e) => {
+                items[index].tooltip = e.target.value;
+            });
+        }
+
+        // فتح نافذة التخصيص
+        document.getElementById('customize-dock').addEventListener('click', () => {
+            loadCustomDockData();
+            renderDockItems();
+            document.getElementById('dock-customize-modal').classList.add('show');
+        });
+
+        // إغلاق النافذة
+        document.getElementById('close-dock-modal').addEventListener('click', () => {
+            document.getElementById('dock-customize-modal').classList.remove('show');
+        });
+
+        document.getElementById('cancel-dock-changes').addEventListener('click', () => {
+            document.getElementById('dock-customize-modal').classList.remove('show');
+        });
+
+        // إغلاق عند النقر خارج النافذة
+        document.getElementById('dock-customize-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'dock-customize-modal') {
+                document.getElementById('dock-customize-modal').classList.remove('show');
+            }
+        });
+
+        // إضافة عنصر جديد
+        document.getElementById('add-right-item').addEventListener('click', () => {
+            customRightDockItems.push({
+                id: `custom-right-${Date.now()}`,
+                title: 'عنصر جديد',
+                url: 'https://example.com',
+                icon: 'fas fa-link',
+                tooltip: 'عنصر جديد'
+            });
+            renderDockItems();
+        });
+
+        document.getElementById('add-left-item').addEventListener('click', () => {
+            customLeftDockItems.push({
+                id: `custom-left-${Date.now()}`,
+                title: 'عنصر جديد',
+                url: 'https://example.com',
+                icon: 'fas fa-robot',
+                tooltip: 'عنصر جديد'
+            });
+            renderDockItems();
+        });
+
+        // حفذ التغييرات
+        document.getElementById('save-dock-changes').addEventListener('click', () => {
+            // حفض في localStorage
+            localStorage.setItem('islam-custom-right-dock', JSON.stringify(customRightDockItems));
+            localStorage.setItem('islam-custom-left-dock', JSON.stringify(customLeftDockItems));
+            
+            // تحديث الأشرطة في الواجهة
+            updateRightDock();
+            updateLeftDock();
+            
+            // إغلاق النافذة
+            document.getElementById('dock-customize-modal').classList.remove('show');
+            
+            // رسالة نجاح
+            showNotification('تم حفظ التغييرات بنجاح!', 'success');
+        });
+
+        // تحديث الشريط الأيمن
+        function updateRightDock() {
+            const rightDock = document.getElementById('rocket-dock');
+            rightDock.innerHTML = '';
+            
+            customRightDockItems.forEach(item => {
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.className = `dock-item ${item.class || ''}`;
+                a.setAttribute('data-tooltip', item.tooltip);
+                a.title = item.tooltip;
+                
+                const i = document.createElement('i');
+                i.className = item.icon;
+                a.appendChild(i);
+                
+                rightDock.appendChild(a);
+            });
+            
+            // إعادة إضافة tooltips
+            addRightDockTooltips();
+        }
+
+        // تحديث الشريط الأيسر
+        function updateLeftDock() {
+            const leftDock = document.getElementById('ai-rocket-dock');
+            leftDock.innerHTML = '';
+            
+            customLeftDockItems.forEach(item => {
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.className = 'dock-item ai-link';
+                const tooltip = item.tooltip || item.title;
+                a.setAttribute('data-tooltip', tooltip);
+                a.title = tooltip;
+                
+                const i = document.createElement('i');
+                i.className = item.icon || 'fas fa-robot';
+                a.appendChild(i);
+                
+                // إنشاء tooltip مخصص
+                const tooltipDiv = document.createElement('div');
+                tooltipDiv.className = 'custom-tooltip';
+                tooltipDiv.textContent = tooltip;
+                tooltipDiv.style.cssText = `
+                    position: absolute;
+                    left: 65px;
+                    background: rgba(0, 0, 0, 0.95);
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                    white-space: normal;
+                    line-height: 1.4;
+                    max-width: 260px;
+                    direction: rtl;
+                    text-align: right;
+                    opacity: 0;
+                    pointer-events: none;
+                    transform: translateX(-10px);
+                    transition: all 0.3s ease;
+                    font-family: 'Cairo', sans-serif;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                    z-index: 10001;
+                    top: 50%;
+                    transform: translateY(-50%) translateX(-10px);
+                `;
+                a.appendChild(tooltipDiv);
+                
+                const color = item.hoverColor || '#4CAF50';
+                a.addEventListener('mouseenter', () => {
+                    a.style.background = `linear-gradient(145deg, ${hexToRgba(color, 0.3)}, ${hexToRgba(color, 0.15)})`;
+                    a.style.borderColor = color;
+                    i.style.color = color;
+                    tooltipDiv.style.opacity = '1';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(0)';
+                });
+                a.addEventListener('mouseleave', () => {
+                    a.style.background = '';
+                    a.style.borderColor = '';
+                    i.style.color = '';
+                    tooltipDiv.style.opacity = '0';
+                    tooltipDiv.style.transform = 'translateY(-50%) translateX(-10px)';
+                });
+                
+                leftDock.appendChild(a);
+            });
+        }
+
+        // رسالة إشعار
+        function showNotification(message, type = 'success') {
+            const notif = document.createElement('div');
+            notif.className = `notification notification-${type} show`;
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.classList.remove('show');
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+
+        // تحميل التخصيص عند بدء التشغيل - بأولوية عالية
+        (function initCustomDocks() {
+            const savedRight = localStorage.getItem('islam-custom-right-dock');
+            const savedLeft = localStorage.getItem('islam-custom-left-dock');
+            
+            console.log('initCustomDocks: savedRight =', savedRight ? 'موجود' : 'غير موجود');
+            console.log('initCustomDocks: savedLeft =', savedLeft ? 'موجود' : 'غير موجود');
+            
+            if (savedRight) {
+                customRightDockItems = JSON.parse(savedRight);
+                console.log('تحميل الشريط الأيمن المخصص:', customRightDockItems.length, 'items');
+                // تأخير بسيط للتأكد من تحميل DOM
+                setTimeout(() => updateRightDock(), 100);
+            }
+            
+            if (savedLeft) {
+                customLeftDockItems = JSON.parse(savedLeft);
+                console.log('تحميل الشريط الأيسر المخصص:', customLeftDockItems.length, 'items');
+                setTimeout(() => updateLeftDock(), 100);
+            }
+        })();
+        
     </script>
 </body>
 </html>
