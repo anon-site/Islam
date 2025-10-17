@@ -2884,11 +2884,13 @@
 
         // Fallback AI links in case fetching JSON fails
         const fallbackAILinks = [
-            { title: 'ChatGPT', url: 'https://chatgpt.com/', icon: 'fas fa-robot', hoverColor: '#10A37F', desc: 'مساعد ذكي للدردشة وكتابة المحتوى وشرح الأكواد' },
-            { title: 'TempMail', url: 'https://temp-mail.org/en/', icon: 'fas fa-envelope', hoverColor: '#1DA1F2', desc: 'مساعد ذكاء اصطناعي من X (تويتر سابقاً) مع معلومات فورية' },
-            { title: 'Runway ML', url: 'https://runwayml.com/', icon: 'fas fa-video', hoverColor: '#00FFA3', desc: 'منصة إنشاء وتحرير الفيديو بالذكاء الاصطناعي' },
-            { title: 'ChatPro', url: 'https://chat.ai-pro.org/chat/new', icon: 'fas fa-comments', hoverColor: '#FF6B6B', desc: 'محادثة ذكية متقدمة مع واجهة احترافية' },
-                    ];
+            { title: 'ChatGPT', url: 'https://chatgpt.com/', icon: 'fas fa-comment-dots', hoverColor: '#10A37F', desc: 'مساعد ذكي للدردشة وكتابة المحتوى' },
+            { title: 'تحميل الفيديو', url: 'https://ssvid.net/en26', icon: 'fas fa-download', hoverColor: '#FF4458', desc: 'تحميل الفيديوهات من جميع المنصات' },
+            { title: 'Temp Mail', url: 'https://temp-mail.org/en/', icon: 'fas fa-envelope', hoverColor: '#1DA1F2', desc: 'بريد إلكتروني مؤقت ومجاني' },
+            { title: 'Warp AI', url: 'https://app.warp.dev/', icon: 'fas fa-terminal', hoverColor: '#00D4FF', desc: 'محطة طرفية ذكية مدعومة بالذكاء الاصطناعي' },
+            { title: 'Photopea', url: 'https://www.photopea.com/', icon: 'fas fa-image', hoverColor: '#18A497', desc: 'محرر صور احترافي مجاني اونلاين' },
+            { title: 'Remove BG', url: 'https://www.remove.bg/', icon: 'fas fa-scissors', hoverColor: '#FF6B6B', desc: 'إزالة خلفية الصور تلقائياً' }
+        ];
 
         async function loadAIDock() {
             let links = [];
