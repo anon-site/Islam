@@ -110,6 +110,7 @@
             background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
+            border-radius: 15px;
         }
 
         .dock-item:hover::before {
@@ -220,7 +221,7 @@
         /* حاوية RocketDock مع الزر */
         .dock-container {
             position: fixed;
-            top: 20px;
+            top: 10px;
             right: 20px;
             z-index: 10000;
             display: flex;
@@ -338,6 +339,10 @@
                 border-radius: 10px;
             }
 
+            .dock-item::before {
+                border-radius: 10px;
+            }
+
             .dock-item i {
                 font-size: 1rem;
             }
@@ -347,21 +352,136 @@
             }
         }
 
-        /* تنسيق الساعة (الافتراضي للشاشات الكبيرة) */
+        /* حاوية التاريخ المحسّنة */
+        .date-container-enhanced {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 25px;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+
+        /* تنسيق الساعة في الأعلى */
         .digital-clock {
             font-family: var(--font-english);
             font-size: 6rem;
             font-weight: 700;
-            margin-bottom: 10px;
             text-shadow: 0 0 20px var(--primary-color), 0 0 30px rgba(255, 255, 255, 0.5);
             direction: ltr;
+            margin-bottom: 5px;
+            order: 1;
         }
 
-        .date-container {
+        /* حاوية بطاقات التاريخ تحت الساعة */
+        .date-cards-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            order: 2;
+        }
+
+        /* بطاقة التاريخ على الجانبين */
+        .date-card {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 8px 16px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            min-width: 170px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .left-date {
+            order: 1;
+        }
+
+        .right-date {
+            order: 2;
+        }
+
+        .date-card:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* أيقونة التاريخ */
+        .date-icon {
             font-size: 1.2rem;
-            margin-bottom: 20px;
-            line-height: 1.8;
-            font-weight: 400;
+            margin-left: 10px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .date-card:hover .date-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* محتوى التاريخ */
+        .date-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: right;
+        }
+
+        /* عنوان التاريخ */
+        .date-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* قيمة التاريخ */
+        .date-value {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            line-height: 1.3;
+        }
+
+        /* فاصل التاريخ */
+        .date-separator {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+            margin: 0 5px;
+        }
+
+        /* تخصيص بطاقة الميلادي */
+        .gregorian-date:hover {
+            border-color: var(--primary-color);
+        }
+
+        .gregorian-date:hover .date-value {
+            color: var(--primary-color);
+        }
+
+        /* تخصيص بطاقة الهجري */
+        .hijri-date:hover {
+            border-color: var(--highlight-color);
+        }
+
+        .hijri-date:hover .date-value {
+            color: var(--highlight-color);
+        }
+
+        .hijri-date .date-icon {
+            font-size: 1.1rem;
         }
 
         /* قسم الصلاة القادمة والعد التنازلي */
@@ -408,18 +528,24 @@
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
 
-        /* تنسيق حاوية البحث */
+        /* حاوية البحث - توسيط */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto 30px auto;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* تنسيق صندوق البحث - محسن وأكثر احترافية */
         .search-wrapper {
             position: relative;
-            width: 90%;
-            max-width: 600px;
-            margin: 0 auto 30px auto;
+            width: 100%;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
-        /* تنسيق صندوق البحث - محسن وأكثر احترافية */
         #city-search {
             padding: 15px 25px;
             border: 2px solid transparent;
@@ -670,19 +796,48 @@
             
             /* 1. الساعة والتاريخ */
             .digital-clock { 
-                font-size: 1rem !important;
+                font-size: 2.5rem !important;
                 margin-top: 5px;
-                margin-bottom: 10px;
-                word-break: keep-all;
-            }
-            .date-container { 
-                font-size: 0.85rem;
                 margin-bottom: 15px;
-                padding: 0 10px;
-                line-height: 1.6;
-                display: flex;
+                word-break: keep-all;
+                order: 2;
+            }
+            
+            .date-container-enhanced {
                 flex-direction: column;
-                gap: 5px;
+                gap: 0;
+                margin-bottom: 20px;
+                padding: 0;
+            }
+            
+            .date-card {
+                min-width: 140px;
+                padding: 8px 15px;
+            }
+            
+            .left-date {
+                order: 1;
+            }
+            
+            .right-date {
+                order: 3;
+            }
+            
+            .date-icon {
+                font-size: 1.2rem;
+                margin-left: 8px;
+            }
+            
+            .date-label {
+                font-size: 0.65rem;
+            }
+            
+            .date-value {
+                font-size: 0.9rem;
+            }
+            
+            .hijri-date .date-icon {
+                font-size: 1.1rem;
             }
 
             /* 2. الصلاة القادمة */
@@ -701,10 +856,14 @@
             }
 
             /* 3. البحث والمدينة */
-            .search-wrapper {
+            .search-container {
+                margin: 15px auto 20px;
+                padding: 0 10px;
                 width: 96%;
                 max-width: none;
-                margin: 0 auto 15px;
+            }
+
+            .search-wrapper {
                 flex-direction: row;
                 gap: 6px;
                 padding: 0;
@@ -983,11 +1142,25 @@
     <!-- السكشن الرئيسي: الساعة والتاريخ والمواقيت -->
     <section class="main-section">
         <div class="main-content">
-            <div class="digital-clock" id="clock">00:00:00</div>
-
-            <div class="date-container">
-                <span id="english-date" class="english-date">Oct 12, 2025</span>
-                <span id="arabic-date" class="arabic-date">20 ربيع الثاني 1447 هـ</span>
+            <div class="date-container-enhanced">
+                <div class="digital-clock" id="clock">00:00:00</div>
+                <div class="date-cards-wrapper">
+                    <div class="date-card gregorian-date left-date">
+                        <div class="date-icon">📅</div>
+                        <div class="date-content">
+                            <div class="date-label">التاريخ الميلادي</div>
+                            <div id="english-date" class="date-value">Oct 12, 2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="date-card hijri-date right-date">
+                        <div class="date-icon">🎐</div>
+                        <div class="date-content">
+                            <div class="date-label">التاريخ الهجري</div>
+                            <div id="arabic-date" class="date-value">20 ربيع الثاني 1447 هـ</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="next-prayer-container">
@@ -2167,8 +2340,35 @@
             font-size: calc(2rem * (var(--zoom-factor, 1))) !important;
         }
 
-        body[data-zoom] .date-container {
+        body[data-zoom] .date-container-enhanced {
+            gap: calc(0px * (var(--zoom-factor, 1))) !important;
+            margin-bottom: calc(25px * (var(--zoom-factor, 1))) !important;
+        }
+
+        body[data-zoom] .date-card {
+            min-width: calc(170px * (var(--zoom-factor, 1))) !important;
+            padding: calc(8px * (var(--zoom-factor, 1))) calc(16px * (var(--zoom-factor, 1))) !important;
+        }
+
+        body[data-zoom] .date-icon {
             font-size: calc(1.2rem * (var(--zoom-factor, 1))) !important;
+            margin-left: calc(10px * (var(--zoom-factor, 1))) !important;
+        }
+
+        body[data-zoom] .date-label {
+            font-size: calc(0.7rem * (var(--zoom-factor, 1))) !important;
+        }
+
+        body[data-zoom] .date-value {
+            font-size: calc(0.95rem * (var(--zoom-factor, 1))) !important;
+        }
+
+        body[data-zoom] .date-separator {
+            font-size: calc(1.1rem * (var(--zoom-factor, 1))) !important;
+        }
+
+        body[data-zoom] .hijri-date .date-icon {
+            font-size: calc(1.1rem * (var(--zoom-factor, 1))) !important;
         }
 
         body[data-zoom] .next-prayer-container {
