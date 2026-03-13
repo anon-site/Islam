@@ -3313,6 +3313,13 @@
 
         // **6.2. طلب الموقع باحترافية**
         async function requestLocationProfessionally() {
+            // التحقق من وجود مدينة محفوظة أولاً
+            const hasSavedCity = localStorage.getItem('islam-saved-city');
+            if (hasSavedCity) {
+                return null;
+            }
+            
+            // التحقق من مرور 24 ساعة على آخر طلب
             if (!shouldRequestLocation()) {
                 return null;
             }
@@ -3328,6 +3335,27 @@
             
             return await detectUserLocation();
         }
+
+        // **6.4. طلب الموقع التلقائي عند الزيارة الأولى**
+        document.addEventListener('DOMContentLoaded', async function() {
+            // انتظر ثانيتين ثم تحقق من طلب الموقع التلقائي
+            setTimeout(async () => {
+                const location = await requestLocationProfessionally();
+                if (location) {
+                    currentCity = location.displayCity;
+                    defaultLatitude = location.lat;
+                    defaultLongitude = location.lon;
+                    
+                    localStorage.setItem('islam-saved-city', currentCity);
+                    localStorage.setItem('islam-saved-lat', defaultLatitude.toString());
+                    localStorage.setItem('islam-saved-lon', defaultLongitude.toString());
+                    localStorage.setItem('islam-location-detected', 'true');
+                    
+                    await getPrayerTimes(defaultLatitude, defaultLongitude, currentCity);
+                    showQuickSuccessNotification(`تم تحديد موقعك تلقائياً: ${currentCity}`);
+                }
+            }, 2000);
+        });
 
         // **6.3. نافذة طلب الإذن بالموقع (محسّنة)**
         function showLocationPermissionDialog() {
@@ -3513,8 +3541,8 @@
             document.body.setAttribute('data-zoom', zoom);
             document.body.style.setProperty('--zoom-factor', zoom / 100);
         } else {
-            // القيمة الافتراضية: 65% على الهاتف، 100% على الحاسوب
-            const defaultZoom = isMobileView() ? 65 : 100;
+            // القيمة الافتراضية: 80% على جميع الأجهزة
+            const defaultZoom = 80;
             zoomSlider.value = defaultZoom;
             zoomValue.textContent = defaultZoom + '%';
             document.body.setAttribute('data-zoom', String(defaultZoom));
@@ -3590,8 +3618,8 @@
                 // إزالة التحديد من خيارات الألوان
                 document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
 
-                // إعادة تعيين مستوى التكبير (65% على الهاتف، 100% على الحاسوب)
-                const defaultZoom = (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) || window.innerWidth <= 768 ? 65 : 100;
+                // إعادة تعيين مستوى التكبير (80% على جميع الأجهزة)
+                const defaultZoom = 80;
                 zoomSlider.value = defaultZoom;
                 zoomValue.textContent = defaultZoom + '%';
                 document.body.setAttribute('data-zoom', String(defaultZoom));
