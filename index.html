@@ -1080,20 +1080,20 @@
 
         <!-- RocketDock - شريط الروابط السريعة -->
         <div class="rocket-dock" id="rocket-dock">
-            <a href="https://www.google.com/" class="dock-item google" data-tooltip="Google" title="Google">
-                <i class="fab fa-google"></i>
-            </a>
-            <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="YouTube" title="YouTube">
-                <i class="fab fa-youtube"></i>
-            </a>
-            <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="NOON TV" title="NOON TV">
+            <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="موقع نون" title="موقع نون">
                 <i class="fas fa-tv"></i>
             </a>
-            <a href="https://anon-site.github.io/falcon.x" class="dock-item falcon-x" data-tooltip="Falcon X" title="Falcon X">
-                <i class="fas fa-rocket"></i>
+            <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="يوتيوب" title="يوتيوب">
+                <i class="fab fa-youtube"></i>
             </a>
-            <a href="https://anon-site.github.io/ai-tools/" class="dock-item ai-tools" data-tooltip="دليل أدوات الذكاء الاصطناعي" title="دليل أدوات الذكاء الاصطناعي">
-                <i class="fas fa-robot"></i>
+            <a href="https://www.google.com/" class="dock-item google" data-tooltip="جوجل" title="جوجل">
+                <i class="fab fa-google"></i>
+            </a>
+            <a href="https://anon-site.github.io/Work-Manager/index.html" class="dock-item" data-tooltip="Work Manager" title="Work Manager">
+                <i class="fas fa-briefcase"></i>
+            </a>
+            <a href="https://graeci-greece.blogspot.com/" class="dock-item" data-tooltip="Graeci Greece" title="Graeci Greece">
+                <i class="fas fa-globe"></i>
             </a>
             <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي" title="موقعي">
                 <i class="fas fa-user"></i>
@@ -3629,20 +3629,20 @@
         // وظيفة إخفاء/إظهار RocketDock
         const dockToggleBtn = document.getElementById('dock-toggle');
         const rocketDock = document.getElementById('rocket-dock');
-        let isDockVisible = false; // القيمة الافتراضية: مغلق
+        let isDockVisible = true; // القيمة الافتراضية: مفتوح
 
         // تحميل الحالة المحفوظة
         const savedDockState = localStorage.getItem('islam-dock-visible');
-        if (savedDockState === 'true') {
-            // إذا كان المحفوظ مفتوح، نفتحه
-            isDockVisible = true;
-        } else {
-            // الحالة الافتراضية: مغلق
+        if (savedDockState === 'false') {
+            // إذا كان المحفوظ مغلق، نغلقه
             isDockVisible = false;
             rocketDock.classList.add('hidden');
             dockToggleBtn.classList.add('closed');
             dockToggleBtn.querySelector('i').classList.remove('fa-chevron-down');
             dockToggleBtn.querySelector('i').classList.add('fa-chevron-up');
+        } else {
+            // الحالة الافتراضية: مفتوح
+            isDockVisible = true;
         }
 
         dockToggleBtn.addEventListener('click', function() {
@@ -3668,20 +3668,20 @@
         // ==============================
         const aiDockToggleBtn = document.getElementById('ai-dock-toggle');
         const aiRocketDock = document.getElementById('ai-rocket-dock');
-        let isAIDockVisible = false; // القيمة الافتراضية: مغلق
+        let isAIDockVisible = true; // القيمة الافتراضية: مفتوح
 
         // Load saved state for AI dock
         const savedAIDockState = localStorage.getItem('islam-ai-dock-visible');
-        if (savedAIDockState === 'true') {
-            // إذا كان المحفوظ مفتوح، نفتحه
-            isAIDockVisible = true;
-        } else {
-            // الحالة الافتراضية: مغلق
+        if (savedAIDockState === 'false') {
+            // إذا كان المحفوظ مغلق، نغلقه
             isAIDockVisible = false;
             aiRocketDock.classList.add('hidden');
             aiDockToggleBtn.classList.add('closed');
             aiDockToggleBtn.querySelector('i').classList.remove('fa-chevron-down');
             aiDockToggleBtn.querySelector('i').classList.add('fa-chevron-up');
+        } else {
+            // الحالة الافتراضية: مفتوح
+            isAIDockVisible = true;
         }
 
         aiDockToggleBtn.addEventListener('click', function() {
