@@ -141,8 +141,13 @@
             border-color: #4285f4;
         }
 
-        .dock-item.google:hover i {
-            color: #4285f4;
+        .dock-item.greece:hover {
+            background: linear-gradient(145deg, rgba(0, 102, 204, 0.3), rgba(0, 102, 204, 0.15));
+            border-color: #0066cc;
+        }
+
+        .dock-item.greece:hover i {
+            color: #0066cc;
         }
 
         .dock-item.youtube:hover {
@@ -1080,22 +1085,22 @@
 
         <!-- RocketDock - شريط الروابط السريعة -->
         <div class="rocket-dock" id="rocket-dock">
-            <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="موقع نون" title="موقع نون">
+            <a href="https://anon-site.github.io/noon.tv/" class="dock-item tv" data-tooltip="موقع نون" title="موقع نون" target="_blank">
                 <i class="fas fa-tv"></i>
             </a>
-            <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="يوتيوب" title="يوتيوب">
+            <a href="https://www.youtube.com/" class="dock-item youtube" data-tooltip="يوتيوب" title="يوتيوب" target="_blank">
                 <i class="fab fa-youtube"></i>
             </a>
-            <a href="https://www.google.com/" class="dock-item google" data-tooltip="جوجل" title="جوجل">
-                <i class="fab fa-google"></i>
+            <a href="https://anon-site.github.io/greece/" class="dock-item greece" data-tooltip="الحياة في اليونان" title="الحياة في اليونان" target="_blank">
+                <i class="fas fa-landmark"></i>
             </a>
-            <a href="https://anon-site.github.io/Work-Manager/index.html" class="dock-item" data-tooltip="Work Manager" title="Work Manager">
+            <a href="https://anon-site.github.io/Work-Manager/index.html" class="dock-item" data-tooltip="Work Manager" title="Work Manager" target="_blank">
                 <i class="fas fa-briefcase"></i>
             </a>
-            <a href="https://graeci-greece.blogspot.com/" class="dock-item" data-tooltip="Graeci Greece" title="Graeci Greece">
+            <a href="https://graeci-greece.blogspot.com/" class="dock-item" data-tooltip="Graeci Greece" title="Graeci Greece" target="_blank">
                 <i class="fas fa-globe"></i>
             </a>
-            <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي" title="موقعي">
+            <a href="https://anon-site.github.io/" class="dock-item portfolio" data-tooltip="موقعي" title="موقعي" target="_blank">
                 <i class="fas fa-user"></i>
             </a>
         </div>
@@ -3733,7 +3738,7 @@
         const fallbackAILinks = [
             { title: 'ChatGPT', url: 'https://chatgpt.com/', icon: 'fas fa-comment-dots', hoverColor: '#10A37F', desc: 'مساعد ذكي للدردشة وكتابة المحتوى' },
             { title: 'تحميل الفيديو', url: 'https://ssvid.net/en26', icon: 'fas fa-download', hoverColor: '#FF4458', desc: 'تحميل الفيديوهات من جميع المنصات' },
-            { title: 'Temp Mail', url: 'https://temp-mail.org/en/', icon: 'fas fa-envelope', hoverColor: '#1DA1F2', desc: 'بريد إلكتروني مؤقت ومجاني' },
+            { title: 'XE Currency', url: 'https://www.xe.com/ar/currencyconverter/', icon: 'fas fa-exchange-alt', hoverColor: '#00A652', desc: 'محول عملات عالمي وأسعار الصرف' },
             { title: 'Warp AI', url: 'https://app.warp.dev/', icon: 'fas fa-terminal', hoverColor: '#00D4FF', desc: 'محطة طرفية ذكية مدعومة بالذكاء الاصطناعي' },
             { title: 'Photopea', url: 'https://www.photopea.com/', icon: 'fas fa-image', hoverColor: '#18A497', desc: 'محرر صور احترافي مجاني اونلاين' },
             { title: 'Remove BG', url: 'https://www.remove.bg/', icon: 'fas fa-scissors', hoverColor: '#FF6B6B', desc: 'إزالة خلفية الصور تلقائياً' }
@@ -3759,10 +3764,9 @@
                 a.className = 'dock-item ai-link';
                 const tooltip = item.desc ? `${item.title} — ${item.desc}` : item.title;
                 a.setAttribute('data-tooltip', tooltip);
-                a.title = tooltip; // إضافة title احتياطي
-                // إزالة فتح في نافذة جديدة
-                // a.target = '_blank';
-                // a.rel = 'noopener';
+                a.title = tooltip;
+                a.target = '_blank';
+                a.rel = 'noopener';
 
                 const i = document.createElement('i');
                 i.className = item.icon || 'fas fa-robot';
@@ -4374,6 +4378,8 @@
                 a.className = `dock-item ${item.class || ''}`;
                 a.setAttribute('data-tooltip', item.tooltip);
                 a.title = item.tooltip;
+                a.target = '_blank';
+                a.rel = 'noopener';
                 
                 const i = document.createElement('i');
                 i.className = item.icon;
@@ -4440,6 +4446,8 @@
                 const tooltip = item.tooltip || item.title;
                 a.setAttribute('data-tooltip', tooltip);
                 a.title = tooltip;
+                a.target = '_blank';
+                a.rel = 'noopener';
                 
                 const i = document.createElement('i');
                 i.className = item.icon || 'fas fa-robot';
